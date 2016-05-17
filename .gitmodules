@@ -1,6 +1,6 @@
 [submodule "nvim/.config/nvim/bundle/base16-vim"]
 	path = nvim/.config/nvim/bundle/base16-vim
-	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/base16-vim/
+	url = nvim/.config/nvim/bundle/base16-vim/
 [submodule "nvim/.config/nvim/bundle/ctrlp.vim"]
 	path = nvim/.config/nvim/bundle/ctrlp.vim
 	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/ctrlp.vim/

@@ -4,3 +4,42 @@
 [submodule "nvim/.config/nvim/bundle/base16-vim"]
 	path = nvim/.config/nvim/bundle/base16-vim
 	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/base16-vim/
+[submodule "nvim/.config/nvim/bundle/ctrlp.vim"]
+	path = nvim/.config/nvim/bundle/ctrlp.vim
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/ctrlp.vim/
+[submodule "nvim/.config/nvim/bundle/goyo.vim"]
+	path = nvim/.config/nvim/bundle/goyo.vim
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/goyo.vim/
+[submodule "nvim/.config/nvim/bundle/nerdcommenter"]
+	path = nvim/.config/nvim/bundle/nerdcommenter
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/nerdcommenter/
+[submodule "nvim/.config/nvim/bundle/opengl.vim"]
+	path = nvim/.config/nvim/bundle/opengl.vim
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/opengl.vim/
+[submodule "nvim/.config/nvim/bundle/pgsql.vim"]
+	path = nvim/.config/nvim/bundle/pgsql.vim
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/pgsql.vim/
+[submodule "nvim/.config/nvim/bundle/rust.vim"]
+	path = nvim/.config/nvim/bundle/rust.vim
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/rust.vim/
+[submodule "nvim/.config/nvim/bundle/todo.txt-vim"]
+	path = nvim/.config/nvim/bundle/todo.txt-vim
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/todo.txt-vim/
+[submodule "nvim/.config/nvim/bundle/vim-airline"]
+	path = nvim/.config/nvim/bundle/vim-airline
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/vim-airline/
+[submodule "nvim/.config/nvim/bundle/vim-colors-solarized"]
+	path = nvim/.config/nvim/bundle/vim-colors-solarized
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/vim-colors-solarized/
+[submodule "nvim/.config/nvim/bundle/vim-glsl"]
+	path = nvim/.config/nvim/bundle/vim-glsl
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/vim-glsl/
+[submodule "nvim/.config/nvim/bundle/vim-markdown-preview"]
+	path = nvim/.config/nvim/bundle/vim-markdown-preview
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/vim-markdown-preview/
+[submodule "nvim/.config/nvim/bundle/vim-openscad"]
+	path = nvim/.config/nvim/bundle/vim-openscad
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/vim-openscad/
+[submodule "nvim/.config/nvim/bundle/vimtex"]
+	path = nvim/.config/nvim/bundle/vimtex
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/vimtex/

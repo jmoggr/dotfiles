@@ -1,0 +1,22 @@
+set recolor true
+
+#width
+set adjust-open 24 
+set scroll-step 40 
+
+map w zoom default
+map i zoom in
+map <C-i> set recolor false
+map o zoom out
+map r reload
+map q quit
+map f toggle_fullscreen
+map [fullscreen] f toggle_fullscreen
+map s toggle_statusbar
+map y toggle_inputbar
+map h navigate_index 
+
+set show-scrollbars false
+set scroll-wrap false
+set render-loading true
+set abort-clear-search false

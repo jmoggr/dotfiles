@@ -1,0 +1,3 @@
+[submodule "base16-vim"]
+	path = base16-vim
+	url = /depository/system/dotfiles-cli/nvim/.config/nvim/bundle/base16-vim/

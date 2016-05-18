@@ -22,12 +22,12 @@ function get_urgency_colour {
 
 calendar_date() {
     test=$(date '+%a %b %d')
-    echo "%{F#$default_foreground}%{F#$status_normal}%{U#$status_normal}%{+u}%{F#$default_foreground}  $test%{-u}"
+    echo "%{F#$default_foreground}%{F#$status_normal}%{U#$status_normal}%{+u}%{F#$default_foreground} $test%{-u}"
 }
 
 time_of_day() {
     test=$(date '+%R')
-    echo "%{F#$default_foreground}%{F#$status_normal}%{U#$status_normal}%{+u}%{F#$default_foreground}  $test%{-u}"
+    echo "%{F#$default_foreground}%{F#$status_normal}%{U#$status_normal}%{+u}%{F#$default_foreground} $test%{-u}"
 }
 
 battery() {
@@ -55,21 +55,22 @@ battery() {
 
     hex_color=$(get_urgency_colour $((100 - $capacity)))
 
-    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#$default_foreground}  $capacity%%{-u}"
+    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#$default_foreground} $capacity%%{-u}"
 }
 
 volume() {
-    percent=$(amixer get Master | sed -n -r "N;s/^.*\[([0-9]+)\%\].*$/\1/p" | xargs printf "%02d")
+    #percent=$(amixer get Master | sed -n -r "N;s/^.*\[([0-9]+)\%\].*$/\1/p" | xargs printf "%02d")
     
+    percent=50
     color=""
     icon=""
-    if amixer get Master | egrep -q "\[[0-9]{1,2}%\] \[off\]"; then
-        color="$status_urgent"
-    else
+    #if amixer get Master | egrep -q "\[[0-9]{1,2}%\] \[off\]"; then
+        #color="$status_urgent"
+    #else
         color="$status_normal"
-    fi
+    #fi
 
-    echo "%{F#${color}}%{+u}%{U#${color}}${icon}%{F#$default_foreground}  ${percent}%%{-u}"
+    echo "%{F#${color}}%{+u}%{U#${color}}${icon}%{F#$default_foreground} ${percent}%%{-u}"
 }
 
 cpuload() {
@@ -87,7 +88,7 @@ cpuload() {
 
     icon="" 
 
-    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}}   $cpu_use_percent%%{-u}"
+    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}} $cpu_use_percent%%{-u}"
 }
 
 
@@ -101,7 +102,7 @@ temperature() {
     hex_color=$(get_urgency_colour $percent)
 
     icon=""
-    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}}   $temp°C%{-u}"
+    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}} $temp°C%{-u}"
 }
 
 memused() {
@@ -112,7 +113,7 @@ memused() {
 
     hex_color=$(get_urgency_colour $mem_use_percent)
 
-    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}}   $mem_use_percent%%{-u}"
+    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}} $mem_use_percent%%{-u}"
 }
 
 desktop_pager() {
@@ -133,10 +134,10 @@ desktop_pager() {
         
         
         case ${tag:0:1} in
-            "#") output+="%{A:herbstclient use ${tag:1:2}:}%{B#$highlight_background}    %{B#$default_background}%{A}" ;;
-            ":") output+="%{A:herbstclient use ${tag:1:2}:}    %{A}" ;;
-            "!") output+="%{A:herbstclient use ${tag:1:2}:}    %{A}" ;;
-            *)   output+="%{A:herbstclient use ${tag:1:2}:}    %{A}"
+            "#") output+="%{A:herbstclient use ${tag:1:2}:}%{B#$highlight_background}  %{B#$default_background}%{A}" ;;
+            ":") output+="%{A:herbstclient use ${tag:1:2}:}  %{A}" ;;
+            "!") output+="%{A:herbstclient use ${tag:1:2}:}  %{A}" ;;
+            *)   output+="%{A:herbstclient use ${tag:1:2}:}  %{A}"
         esac
 
         output+=""
@@ -171,18 +172,9 @@ fade_in() {
     echo $fade
 }
 
-counter() {
-   /home/jason/.lemonbar/counter-bin 
-}
-
-quote() {
-    echo "%{T2}For I knew I had to rise above it all, or drown in my own shit%{T1}"
-}
-
-
 #echo "$(date)"
 
-echo "%{B#$default_background}%{F#$default_foreground}%{l}$(desktop_pager)%{F#124A69}┃%{F#$default_foreground}  $(hidden_window_count)  %{F#124A69}┃%{F#$default_foreground}  $(counter) $(fade_out) %{c}$(quote) %{r}$(fade_in) $(battery)    $(volume)    $(memused)    $(temperature)    $(cpuload)    $(calendar_date)    $(time_of_day) %{B#00000000}"
+echo "%{B#$default_background}%{F#$default_foreground}%{l}$(desktop_pager)%{F#124A69}┃%{F#$default_foreground} $(hidden_window_count) %{F#124A69}┃%{F#$default_foreground} $(fade_out) %{r}$(fade_in)  $(battery)  $(volume)  $(memused)  $(temperature)  $(cpuload)  $(calendar_date)  $(time_of_day) %{B#00000000}"
 
 # This loop will fill a buffer with our infos, and output it to stdout.
 #while :; do

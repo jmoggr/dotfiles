@@ -1,3 +1,0 @@
-clear Mod4
-keycode 134 = Alt_L Meta_L Alt_L Meta_L
-!add Mod4 = Alt_L

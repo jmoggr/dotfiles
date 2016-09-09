@@ -12,6 +12,7 @@ syntax enable
 
 let g:airline_powerline_fonts = 1			"user powerline  fonts for airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_tabs = 0
 
 let vim_markdown_preview_toggle=0
 let vim_markdown_preview_use_xdg_open=1
@@ -88,6 +89,8 @@ nnoremap <leader><space> :nohlsearch<CR>
 nnoremap j gj
 nnoremap k gk
 
+iabbrev <// </<C-X><C-O>
+
 nnoremap <space> za     "space toggles code folding
 
 "controls for window and buffer movement
@@ -98,8 +101,38 @@ nnoremap <C-k> :bprevious<CR>
 nnoremap <C-j> :bnext<CR>       
 nnoremap <C-q> :Kwbd<CR>        
 
+nnoremap <C-f> :call ToggleFullscreen()<CR>        
+
 filetype plugin indent on
 
-autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 expandtab
+function Inittoggle()
+    let g:pastColumns = &columns
+endfunction
 
-au FileType gitcommit set tw=72
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd VimEnter * :call Inittoggle()
+
+
+function ToggleFullscreen()
+    if &columns > 137 && g:pastColumns <= 137
+        if tabpagenr("$") != 1
+            tabn
+            execute "normal! \<C-w>="
+        else
+            tabedit %
+        endif
+    elseif &columns <= 137 && g:pastColumns > 137
+        if tabpagenr("$") != 1
+            tabp
+        else
+            tabedit %
+        endif
+    endif
+
+    let g:pastColumns = &columns
+endfunction
+
+
+"autocmd VimResized * :call ToggleFullscreen()
+
+autocmd FileType gitcommit set tw=72

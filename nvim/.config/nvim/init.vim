@@ -99,6 +99,8 @@ nnoremap <C-l> <C-W>l
 nnoremap <C-n> :enew<CR>        
 nnoremap <C-k> :bprevious<CR>   
 nnoremap <C-j> :bnext<CR>       
+
+"from bclose.vim plugin, closes a buffer while maintaining window layout
 nnoremap <C-q> :Kwbd<CR>        
 
 nnoremap <C-f> :call ToggleFullscreen()<CR>        

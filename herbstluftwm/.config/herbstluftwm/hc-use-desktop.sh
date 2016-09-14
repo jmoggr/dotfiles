@@ -2,6 +2,8 @@
 
 herbstclient use "$1"
 
+$HOME/.config/herbstluftwm/hc-input-dirty.sh
+
 #switch_tag="false"
 
 #if [[ -n $1 ]]; then

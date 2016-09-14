@@ -41,7 +41,7 @@ hc keybind $Mod-l     focus right
 hc keybind F1   spawn amixer set Master toggle 
 hc keybind F2   spawn amixer set Master 2%- 
 hc keybind F3   spawn amixer set Master 2%+ 
-hc keybind $Mod-p pseudotile toggle
+#hc keybind $Mod-p pseudotile toggle
 # moving clients
 #hc keybind $Mod-Shift-h     shift left
 #hc keybind $Mod-Shift-j     shift down
@@ -78,6 +78,7 @@ tag_names=( {1..9} 0 )
 hc set default_frame_layout 2
 for i in ${tag_names[@]} ; do
     hc add "$i"
+    hc add "h$i"
     hc keybind "$Mod-$i"       spawn /home/jason/.config/herbstluftwm/hc-use-desktop.sh "$i"
     hc keybind "$Mod-Shift-$i" spawn /home/jason/.config/herbstluftwm/hc-shift-desktop.sh "$i"
 done
@@ -88,7 +89,8 @@ hc merge_tag default ${tag_names[0]}
 # layouting
 #hc keybind $Mod-r remove
 #hc keybind $Mod-s floating toggle
-hc keybind $Mod-f fullscreen toggle
+hc keybind $Mod-Shift-f fullscreen toggle
+# hc keybind $Mod-f spawn /home/jason/.config/herbstluftwm/hc-toggle-fullscreen.sh
 # The following cycles through the available layouts within a frame, but skips
 # layouts, if the layout change wouldn't affect the actual window positions.
 # I.e. if there are two windows within a frame, the grid layout is skipped.
@@ -124,9 +126,9 @@ hc set frame_gap 24
 
 hc set gapless_grid 1
 
-hc attr theme.active.color '#44AAAD'
-hc attr theme.normal.color '#454545'
-hc attr theme.urgent.color orange
+hc attr theme.active.color '#499c9c'
+hc attr theme.normal.color '#1b2b34'
+hc attr theme.urgent.color '#EC5f67' 
 hc attr theme.border_width 2
 
 hc set window_gap 0 
@@ -169,8 +171,10 @@ hc unlock
     #"$panel" $monitor &
 #done
 
+#source $HOME/keyboard.sh
+
 if ! pstree $PPID | grep -q lemonbar; then
-    $HOME/.lemonbar/hc-lemonbar.sh &
+    $HOME/.config/herbstluftwm/lemonbar/hc-lemonbar.sh &
 fi
 
 

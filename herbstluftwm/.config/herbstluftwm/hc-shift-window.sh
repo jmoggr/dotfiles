@@ -3,10 +3,6 @@
 current_tag=$(herbstclient attr tags.focus.name)
 hidden_tag="h$current_tag"
 
-if ! herbstclient attr tags.by-name | grep -q $hidden_tag; then
-    herbstclient add $hidden_tag 
-fi
-
 if [ "left" == "$1" ]; then
     direction="left"
     opposite="right"
@@ -52,7 +48,7 @@ if [[ -z "${new_focus// }" ]] && [[ "$opposite_status" == 0 ]]; then
 
     echo "case 1"
     herbstclient chain . lock . move $hidden_tag . focus $direction . move $hidden_tag . unlock
-    sleep 0.4
+    sleep 0.12
     herbstclient chain . lock . focus $opposite . bring $opposite_focus . focus $direction . bring $current_focus . unlock
 
 
@@ -60,21 +56,21 @@ elif [[ "${new_focus// }" ]] && [[ "$opposite_status" != 0 ]]; then
     echo "case 2"
     herbstclient chain . lock . move $hidden_tag . bring $new_focus . unlock 
     herbstclient focus $direction
-    sleep 0.4 
+    sleep 0.12 
     herbstclient chain . lock . bring $current_focus . unlock 
 
 elif [[ "${new_focus// }" ]] && [[ "$opposite_status" == 0 ]]; then
     echo "case 3"
     herbstclient chain . lock . move $hidden_tag . bring $new_focus . unlock 
     herbstclient focus $direction
-    sleep 0.4 
+    sleep 0.12 
     herbstclient chain . lock . move $hidden_tag . bring $current_focus . unlock 
 
 elif [[ -z "${new_focus// }" ]] && [[ "$opposite_status" != 0 ]]; then
     echo "case 4"
     herbstclient move $hidden_tag
     herbstclient focus $direction
-    sleep 0.4
+    sleep 0.12
     herbstclient bring $current_focus
 fi
 

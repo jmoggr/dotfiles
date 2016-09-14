@@ -16,8 +16,6 @@ if [[ -z "${current_tag// }" ]]; then
     current_tag=$(herbstclient attr tags.focus.name)
 fi
 
-old_tag=$(herbstclient attr tags.focus.name)
-
 hidden_tag="h$current_tag"
 
 if ! herbstclient attr tags.by-name | grep -q $hidden_tag; then

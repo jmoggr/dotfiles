@@ -24,6 +24,8 @@ $HOME/.config/herbstluftwm/hc-ballance-frames.sh
 $HOME/.config/herbstluftwm/hc-ballance-windows.sh $1
 $HOME/.config/herbstluftwm/hc-ballance-frames.sh $1
 
+$HOME/.config/herbstluftwm/hc-input-dirty.sh
+
 
 #if [ "left" == "$1" ]; then
     #direction="left"

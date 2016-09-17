@@ -38,9 +38,10 @@ hc keybind $Mod-k     focus up
 hc keybind $Mod-l     focus right
 
 
-hc keybind F1   spawn amixer set Master toggle 
-hc keybind F2   spawn amixer set Master 2%- 
-hc keybind F3   spawn amixer set Master 2%+ 
+hc keybind F1   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh mute 
+hc keybind F2   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh down
+hc keybind F3   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh up
+
 #hc keybind $Mod-p pseudotile toggle
 # moving clients
 #hc keybind $Mod-Shift-h     shift left

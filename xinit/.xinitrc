@@ -20,6 +20,6 @@ amixer sset Master mute
 #source /home/jason/keyboard.sh
 
 feh --bg-center ~/.wallpapers/blue-blocks-cavern.jpg
-xkbcomp ~/op.txt $DISPLAY
+xkbcomp $HOME/.config/keyboard/blackbird-layout.xkb $DISPLAY
 
 exec herbstluftwm 

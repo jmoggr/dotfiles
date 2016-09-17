@@ -64,16 +64,16 @@ battery()
 }
 
 volume() {
-    #percent=$(amixer get Master | sed -n -r "N;s/^.*\[([0-9]+)\%\].*$/\1/p" | xargs printf "%02d")
-    
-    percent=50
+
+    percent=$(amixer get Master | sed -n -r "N;s/^.*\[([0-9]+)\%\].*$/\1/p" | xargs printf "%02d")
     color=""
     icon=""
-    #if amixer get Master | egrep -q "\[[0-9]{1,2}%\] \[off\]"; then
-        #color="$status_urgent"
-    #else
+    
+    if amixer get Master | egrep -q "\[[0-9]{1,2}%\] \[off\]"; then
+        color="$status_urgent"
+    else
         color="$status_normal"
-    #fi
+    fi
 
     echo "%{F#${color}}%{+u}%{U#${color}}${icon}%{F#$default_foreground} %{T0}${percent}%%{-u}"
 }

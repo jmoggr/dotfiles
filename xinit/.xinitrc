@@ -12,8 +12,6 @@ xrandr --output HDMI-1 --mode 2560x1440
 xrandr --output LVDS-1 --off
 xrandr --output HDMI-1 --primary
 
-xrdb /home/jason/.Xresources
-
 amixer sset Master 50%,50%
 amixer sset Master mute
 

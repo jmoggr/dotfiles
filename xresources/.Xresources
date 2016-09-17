@@ -1,5 +1,0 @@
-#include ".Xresources.d/rofi"
-
-Xcursor.theme: Oxygen_Blue
-Xcursor.size: 32
-

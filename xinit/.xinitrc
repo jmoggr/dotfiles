@@ -14,8 +14,8 @@ xrandr --output HDMI-1 --primary
 
 xrdb /home/jason/.Xresources
 
-##amixer sset Master 50%,50%
-##amixer sset Master mute
+amixer sset Master 50%,50%
+amixer sset Master mute
 
 #source /home/jason/keyboard.sh
 

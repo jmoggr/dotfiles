@@ -34,6 +34,5 @@ for hidden_winid in `herbstclient dump $hidden_tag | egrep -o  "0x[0-9a-z]{6,}"`
 done
 
 if [[ "$change_made" == "true" ]]; then
-    echo "change made"
-    #herbstclient load $current_tag "$new_layout"
+    herbstclient load $current_tag "$new_layout"
 fi

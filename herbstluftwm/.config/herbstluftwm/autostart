@@ -186,3 +186,5 @@ fi
 if ! pstree $PPID | grep -q compton; then
     compton &
 fi
+
+feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg

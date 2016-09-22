@@ -28,6 +28,7 @@ window_moved=false
 
 for extra_winid in `herbstclient layout $current_tag | egrep "0x[0-9a-z]{6,} .*?0x[0-9a-z]{6,}" | egrep -o "0x[0-9a-z]{6,}" | head -n -1`; do
 
+    # add window to back of hidden tag
     hidden_layout=$(echo $hidden_layout | sed -r "s/(^[^\)]+)(\))/\1 ${extra_winid}\2/")
     window_moved=true
 done

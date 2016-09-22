@@ -2,21 +2,8 @@
 
 # z3bra - (c) wtfpl 2014
 # Fetch infos on your computer, and print them to stdout every second.
-default_background="1b2b34"
-highlight_background="296B5F"
-default_foreground="f4d4cc"
+source $HOME/.config/herbstluftwm/hc-colors.sh
 
-status_urgent="EC5f67"
-status_normal="2B8DA6"
-
-accent="124A69"
-fullscreen="C594C5"
-
-#default_background="1d2b30"
-#highlight_background="296B5F"
-#default_foreground="f4d4cc"
-#status_normal="2B8DA6"
-#status_urgent="b20600"
 
 function get_urgency_colour 
 {
@@ -30,13 +17,13 @@ function get_urgency_colour
 calendar_date() 
 {
     date_string=$(date '+%a %b %d')
-    echo "%{T4}%{F#$default_foreground}$date_string"
+    echo "%{T4}%{F$text_color}$date_string"
 }
 
 time_of_day() 
 {
     time_string=$(date '+%R')
-    echo "%{F#$default_foreground}$time_string"
+    echo "%{F$text_color}$time_string"
 }
 
 battery() 
@@ -60,7 +47,7 @@ battery()
 
     hex_color=$(get_urgency_colour $((100 - $capacity)))
 
-    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#$default_foreground} $capacity%%{-u}"
+    echo "%{F${hex_color}}%{+u}%{U${hex_color}}$icon%{F$text_color} $capacity%%{-u}"
 }
 
 volume() {
@@ -70,12 +57,12 @@ volume() {
     icon=""
     
     if amixer get Master | egrep -q "\[[0-9]{1,2}%\] \[off\]"; then
-        color="$status_urgent"
+        color="$urgent_color"
     else
-        color="$status_normal"
+        color="$accent_color"
     fi
 
-    echo "%{F#${color}}%{+u}%{U#${color}}${icon}%{F#$default_foreground} %{T0}${percent}%%{-u}"
+    echo "%{F${color}}%{+u}%{U${color}}${icon}%{F$text_color} %{T0}${percent}%%{-u}"
 }
 
 cpuload() 
@@ -94,7 +81,7 @@ cpuload()
 
     icon="" 
 
-    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}} $cpu_use_percent%%{-u}"
+    echo "%{F${hex_color}}%{+u}%{U${hex_color}}$icon%{F${text_color}} $cpu_use_percent%%{-u}"
 }
 
 
@@ -109,7 +96,7 @@ temperature()
     hex_color=$(get_urgency_colour $percent)
 
     icon=""
-    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}} $temp°C%{-u}"
+    echo "%{F${hex_color}}%{+u}%{U${hex_color}}$icon%{F${text_color}} $temp°C%{-u}"
 }
 
 memused() {
@@ -120,12 +107,12 @@ memused() {
 
     hex_color=$(get_urgency_colour $mem_use_percent)
 
-    echo "%{F#${hex_color}}%{+u}%{U#${hex_color}}$icon%{F#${default_foreground}} $mem_use_percent%%{-u}"
+    echo "%{F${hex_color}}%{+u}%{U${hex_color}}$icon%{F${text_color}} $mem_use_percent%%{-u}"
 }
 
 desktop_pager() 
 {
-    pager_string="%{F#$default_foreground}"
+    pager_string="%{F$text_color}"
 
     for tag in `herbstclient tag_status`; do
 
@@ -142,9 +129,9 @@ desktop_pager()
         fi
         
         case ${tag:0:1} in
-            "#") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{B#$highlight_background}  %{B#$default_background}%{A}" ;;
+            "#") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{B$active_color}  %{B$normal_color}%{A}" ;;
             ":") pager_string+="%{A:hc_use_tag ${tag:1:2}:}  %{A}" ;;
-            "!") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{F#$status_urgent}  %{F#$default_foreground}%{A}" ;;
+            "!") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{F$urgent_color}  %{F$text_color}%{A}" ;;
             *)   pager_string+="%{A:hc_use_tag ${tag:1:2}:}  %{A}"
         esac
     done
@@ -159,18 +146,18 @@ hidden_window_count()
 
     window_count=$(herbstclient dump "$hidden_tag" | egrep -o "0x[0-9a-z]{6,}" | wc -l)
 
-    echo "%{T2}%{F#ffffff}$window_count%{T-}%{F#$default_foreground}"
+    echo "%{T2}%{F#ffffff}$window_count%{T-}%{F$text_color}"
 }
 
 fade_out() 
 {
-    fade=$(seq 255 -5 0 | xargs printf "%%{B#%x$default_background} ")
+    fade=$(seq 255 -5 0 | xargs printf "%%{B#%x${normal_color:1}} ")
     echo $fade
 }
 
 fade_in() 
 {
-    fade=$(seq 0 5 255 | xargs printf "%%{B#%x$default_background} ")
+    fade=$(seq 0 5 255 | xargs printf "%%{B#%x${normal_color:1}} ")
     echo $fade
 }
 
@@ -193,7 +180,7 @@ while :; do
     fi
 
     if [ "$update" == "true" ]; then
-        echo "%{B#$default_background}{F#$default_foreground}%{l}$(desktop_pager) %{F#$accent}┃%{F#$default_foreground} $(hidden_window_count) %{F#$accent}┃%{F#$default_foreground}  $(fade_out)  %{r}$(fade_in)  $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B#$highlight_background}   $(calendar_date)   $(time_of_day) %{B#00000000}"
+        echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)  $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
         update="false"
     fi
 

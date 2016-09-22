@@ -80,5 +80,5 @@ if __name__ == "__main__":
     g = round(g)
     b = round(b)
 
-    hexcode = "{0:02X}{1:02X}{2:02X}".format(r, g, b)
+    hexcode = "#{0:02X}{1:02X}{2:02X}".format(r, g, b)
     print(hexcode)

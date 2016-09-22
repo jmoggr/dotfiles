@@ -109,28 +109,31 @@ hc keybind $Mod-BackSpace   cycle_monitor
 hc keybind $Mod-i jumpto urgent
 
 # theme
-hc attr theme.tiling.reset 1
-hc attr theme.floating.reset 1
-hc attr theme.minimal.reset 1
-hc attr theme.active.reset 1
-hc attr theme.normal.reset 1
-hc attr theme.urgent.reset 1
 
-hc set frame_bg_normal_color '#454545'
-hc set frame_bg_active_color '#44AAAD'
-
+#so bare desktop shows through empty frames
 hc set frame_bg_transparent 1
-hc attr theme.active.color '#499c9c'
-hc attr theme.normal.color '#1b2b34'
-hc attr theme.urgent.color '#EC5f67' 
+
+hc set frame_bg_active_color $active_color
+
+# normal theme for others is too dark
+hc set frame_bg_normal_color $normal_color 
+
+hc attr theme.active.color $active_color
+hc attr theme.normal.color $normal_color
+hc attr theme.urgent.color $urgent_color
 hc attr theme.border_width 2
 
 hc set frame_gap 24 
-hc set window_gap 0 
-hc set frame_padding 0
+#hc set window_gap 0 
+#hc set frame_padding 0
+
+# so frame and window borders don't collide
 hc set frame_border_width 0
 hc set always_show_frame 1
+
+# so empty frames have their borders drawn
 hc set frame_transparent_width 2
+
 
 # If set don't draw window borders if there is no ambiguity in focus. Disable to prevent inconsisten window borders
 hc set smart_window_surroundings 0
@@ -155,7 +158,7 @@ hc unrule -F
 #hc rule class~'(.*[Rr]xvt.*|.*[Tt]erm|Konsole)' focus=on
 
 # turn on pseudotiling for splash windows. Splash windows often look bad when forced to scale to their frame.
-hc rule windowtype~'_NET_WM_WINDOW_TYPE_SPLASH' --pseudotile=on
+hc rule windowtype='_NET_WM_WINDOW_TYPE_SPLASH' --pseudotile=on
 
 # give focus to new dialogs
 hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' --focus=on

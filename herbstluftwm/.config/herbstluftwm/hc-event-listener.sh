@@ -1,6 +1,5 @@
 #!/bin/bash
 
-herbstclient unrule --all
 herbstclient rule class~.* --hook=any_window
 
 function Check_fullscreen

@@ -1,27 +1,15 @@
 #!/bin/bash
 
-herbstclient use "$1"
+target_tag=$($HOME/.config/herbstluftwm/hc-check-tag.sh $1)
 
-$HOME/.config/herbstluftwm/hc-input-dirty.sh
+current_tag=$(herbstclient attr tags.focus.name)
 
-#switch_tag="false"
+if [[ "$current_tag" != "$target_tag" ]]; then
+    herbstclient use "$1"
 
-#if [[ -n $1 ]]; then
-    #switch_tag=$(herbstclient attr tags.focus.name)
-#else:
-    #for i in {1..10}; do 
-        #if [[ "$i" == "$1" ]]; then
-           #switch_tag="$i"
-           #break
-        #fi
-    #done
-    
-    #if [[ "$switch_tag" == "false" ]]; then
-        #exit 0
-    #fi
-#fi
+    $HOME/.config/herbstluftwm/hc-input-dirty.sh
+fi
 
-#current_tag=$(herbstclient attr tags.focus.name)
 
 #if [[ -n $HC_PREVIOUS_TAG ]]; then
     #prevous_tag=""

@@ -1,21 +1,6 @@
 #!/bin/bash
 
-current_tag=""
-
-if ! [[ -z "$1" ]]; then
-    found=false
-    for i in {0..9}; do
-        if [[ "$i" == "$1" ]]; then
-            current_tag=$i
-            break
-        fi
-    done
-fi
-
-if [[ -z "${current_tag// }" ]]; then
-    current_tag=$(herbstclient attr tags.focus.name)
-fi
-
+current_tag=$($HOME/.config/herbstluftwm/hc-check-tag.sh $1)
 hidden_tag="h$current_tag"
 
 if ! herbstclient attr tags.by-name | grep -q $hidden_tag; then

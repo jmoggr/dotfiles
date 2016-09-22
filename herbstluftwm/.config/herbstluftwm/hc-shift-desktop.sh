@@ -1,18 +1,10 @@
 #!/bin/bash
 
-if [[ -z "$1" ]]; then
-    exit 0
-fi
+target_tag=$($HOME/.config/herbstluftwm/hc-check-tag.sh $1)
 
-found=false
-for i in {0..9}; do
-    if [[ "$i" == "$1" ]]; then
-        found=true
-        break
-    fi
-done
+current_tag=$(herbstclient attr tags.focus.name)
 
-if [[ "$found" == "false" ]]; then
+if [[ "$current_tag" == "$target_tag" ]]; then
     exit 0
 fi
 
@@ -25,38 +17,3 @@ $HOME/.config/herbstluftwm/hc-ballance-windows.sh $1
 $HOME/.config/herbstluftwm/hc-ballance-frames.sh $1
 
 $HOME/.config/herbstluftwm/hc-input-dirty.sh
-
-
-#if [ "left" == "$1" ]; then
-    #direction="left"
-    #opposite="right"
-#elif [ "right" == "$1" ]; then
-    #direction="right"
-    #opposite="left"
-#elif [ "up" == "$1" ]; then
-    #direction="up"
-    #opposite="down"
-#elif [ "down" == "$1" ]; then
-    #direction="down"
-    #opposite="up"
-#else
-    #exit 1
-#fi
-
-
-#herbstclient lock
-#current_focus=$(herbstclient attr clients.focus.winid)
-
-#result="$((herbstclient focus $direction) 2>&1)"
-
-#if [ "$result" == "focus: No neighbour found" ]; then
-    #herbstclient unlock
-    #exit 0
-#fi
-
-#herbstclient shift -e $opposite
-
-#herbstclient jumpto $current_focus
-#herbstclient shift -e $direction
-
-#herbstclient unlock

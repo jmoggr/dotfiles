@@ -125,17 +125,11 @@ hc attr theme.normal.color $normal_color
 hc attr theme.urgent.color $urgent_color
 hc attr theme.border_width 2
 
-hc set frame_gap 24 
-#hc set window_gap 0 
-#hc set frame_padding 0
 
-# so frame and window borders don't collide
+# always show a border. Window borders overwrite frame borders so only one border is ever shown.
 hc set frame_border_width 0
-hc set always_show_frame 1
-
-# so empty frames have their borders drawn
 hc set frame_transparent_width 2
-
+hc set always_show_frame 1
 
 # If set don't draw window borders if there is no ambiguity in focus. Disable to prevent inconsisten window borders
 hc set smart_window_surroundings 0
@@ -143,8 +137,8 @@ hc set smart_window_surroundings 0
 # If set don't draw frame borders if there is no ambiguity in focus. Disable to prevent inconsisten window borders
 hc set smart_frame_surroundings 0
 
-hc set mouse_recenter_gap 0
-hc set focus_stealing_prevention 1
+# if set only pagers and task bars can request focus change. No difference noticed
+hc set focus_stealing_prevention 0
 
 # mouse focuses whichever window it hovers over
 hc set focus_follows_mouse 1
@@ -153,11 +147,6 @@ hc set focus_follows_mouse 1
 
 #unset all rules
 hc unrule -F
-#hc rule class=XTerm tag=3 # move all xterms to tag 3
-#hc rule focus=on # normally focus new clients
-#hc rule focus=off # normally do not focus new clients
-# give focus to most common terminals
-#hc rule class~'(.*[Rr]xvt.*|.*[Tt]erm|Konsole)' focus=on
 
 # turn on pseudotiling for splash windows. Splash windows often look bad when forced to scale to their frame.
 hc rule windowtype='_NET_WM_WINDOW_TYPE_SPLASH' --pseudotile=on
@@ -168,7 +157,11 @@ hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' --focus=on
 # don't manage desktop utility windows. Leaving those windows managed doesn't seem to have any effect on WM behaviour for some reason.
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' --manage=off
 
+# pad top of the monitor so there is a gap between the status bar and the WM content
 hc pad 0 24
+
+# gap between frames and egde of monitor
+hc set frame_gap 24 
 
 # unlock, just to be sure
 hc unlock

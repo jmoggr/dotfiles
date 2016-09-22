@@ -117,7 +117,7 @@ desktop_pager()
     for tag in `herbstclient tag_status`; do
 
         visible_tag_found=false
-        for visible_tag in {0..5}; do
+        for visible_tag in {1..6}; do
             if [[ "${tag:1:2}" == "$visible_tag" ]]; then
                 visible_tag_found=true
                 break

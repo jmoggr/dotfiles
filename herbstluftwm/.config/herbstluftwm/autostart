@@ -26,7 +26,7 @@ hc set default_frame_layout 2
 hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 
-hc keybind $Mod-Return  spawn st
+hc keybind $Mod-Return  spawn urxvtc
 hc keybind $Mod-Tab     spawn firefox
 hc keybind $Mod-q       spawn /home/jason/.config/herbstluftwm/hc-close-window.sh 
 hc keybind $Mod-r       spawn /home/jason/.config/herbstluftwm/hc-remove-frame.sh
@@ -169,6 +169,9 @@ hc unlock
 # set styling for pretty printed herbstluftwm object trees
 #hc set tree_style '╾│ ├└╼─┐'
 #hc set tree_style '-| |\"---.'
+
+
+hc spawn urxvtd --quiet --opendisplay
 
 if ! pstree $PPID | grep -q lemonbar; then
     $HOME/.config/herbstluftwm/lemonbar/hc-lemonbar.sh &

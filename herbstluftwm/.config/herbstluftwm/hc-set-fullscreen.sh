@@ -5,9 +5,9 @@ hidden_tag="h$current_tag"
 hidden_layout=$(herbstclient dump $hidden_tag)
 focus_winid=$(herbstclient attr clients.focus.winid)
 
-for extra_winid in `herbstclient dump $current_tag | egrep -o  "0x[0-9a-z]{6,}" | grep -v "$focus_winid" | tac`; do
+for extra_winid in `herbstclient dump $current_tag | egrep -o  "0x[0-9a-z]{6,}" | grep -v "$focus_winid"`; do
     # add extra windids to start of hidden tag stack
-    hidden_layout=$(echo $hidden_layout | sed -r "s/(^[^ ]+ [^ ]+)(.*$)/\1 ${extra_winid}\2/")
+    hidden_layout=$(echo $hidden_layout | sed -r "s/(^[^:]+:[^\) ]+)(.*$)/\1 ${extra_winid}\2/")
     window_moved=true
 done
 

@@ -171,18 +171,10 @@ hc unlock
 #hc set tree_style '-| |\"---.'
 
 
+hc spawn $HOME/.config/herbstluftwm/lemonbar/hc-lemonbar.sh 
+hc spawn $HOME/.config/herbstluftwm/hc-event-listener.sh 
+
 hc spawn urxvtd --quiet --opendisplay
-
-if ! pstree $PPID | grep -q lemonbar; then
-    $HOME/.config/herbstluftwm/lemonbar/hc-lemonbar.sh &
-fi
-
-if ! pstree $PPID | grep -q hc-event-listener.sh; then
-    $HOME/.config/herbstluftwm/hc-event-listener.sh &
-fi
-
-if ! pstree $PPID | grep -q compton; then
-    compton &
-fi
+hc spawn compton 
 
 feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg

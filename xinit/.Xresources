@@ -30,7 +30,6 @@ URxvt.letterSpace: 1
 
 URxvt.font: xft:DejaVu Sans Mono for Powerline:size=12.5:antialias=true:autohint=true
 
-
 #define base00 #181818
 #define base01 #282828
 #define base02 #383838

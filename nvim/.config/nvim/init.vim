@@ -21,10 +21,8 @@ let vim_markdown_preview_github=1
 let vim_markdown_preview_browswer="firefox"
 
 let g:sql_type_default = 'pgsql'
-
-set background=dark
+                set background=dark
 colorscheme base16-default
- 
 set laststatus=2 	    "enable status line even with only one window
 set wildmenu
 set cursorline

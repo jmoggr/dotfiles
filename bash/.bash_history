@@ -1,35 +1,3 @@
-emacs mute-window.sh
-ls
-emacs .spacemacs 
-nvim .spacemacs 
-nvim ~/.config/nvim/init.vim 
-nvlo-world.pdf 
-context Hello-world.tex && zathura Hello-world.pdf 
-cd downloads/
-context Hello-world.tex 
-zathura Hello-world.
-zathura Hello-world.pdf 
-ls
-tar -xzf zathura-0.3.6.tar.gz 
-ls
-cd zathura-0.3.6
-ls
-make
-xbps-query -Rs girar
-sudo xbps-install -S  girara-devel
-make
-xbps-query -Rs magic
-sudo xbps-install -S libmagick-devel
-make
-xbps-query -Rs magic
-xbps-query -Rs magic
-sudo xbps-install -S libmagick-perl
-ls
-cat README 
-make
-WITH_MAGIC=0 make
-xbsp-query -Rs msgfmt
-xbps-query -Rs msgfmt
 xbps-query -Rs fmt
 sudo xbps-install -S gettext
 WITH_MAGIC=0 make
@@ -498,3 +466,35 @@ git status
 cd zathura/.config/zathura/
 ls
 nvim zathurarc 
+ls
+cd dotfiles/
+ls
+cd cli/
+ls
+git status
+git add nvim/*
+git status
+git commit
+emacs --daemon
+git commit
+ls
+git status
+git add emacs/*
+git status
+git add emacs/.emacs.d/*
+sudo xbps-install -S git-all
+ls
+cd emacs/.emacs.d/
+ls
+git --git-dir=.git --work-tree=. add .
+git --git-dir=.git --work-tree=. status
+cd ..
+git add .emacs.d/
+git status
+cd ..
+ls
+git commit
+git add stow-all.sh htop/ bash/ zsh/
+git status
+git commit -m "Added files"
+exit

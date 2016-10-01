@@ -1,42 +1,3 @@
-xbps-query -Rs fmt
-sudo xbps-install -S gettext
-WITH_MAGIC=0 make
-ls
-.zathura -s -x "gvim --servername $1 -c \"let g:syncpdf='$1'\" --remote +%{line} %{input}" $*
-./zathura -s -x "gvim --servername $1 -c \"let g:syncpdf='$1'\" --remote +%{line} %{input}" $*
-sudo xbps-remove zathura
-sudo make install
-zathura -s -x "gvim --servername $1 -c \"let g:syncpdf='$1'\" --remote +%{line} %{input}" $*
-ls
-cat README 
-ls
-ls doc/
-cd doc/
-ls
-cat requirements.txt 
-cat api/
-ls api/
-ls installation/
-cd ~/.config/zathura/
-ls
-nvim zathurarc 
-zathura -s -x "gvim --servername $1 -c \"let g:syncpdf='$1'\" --remote +%{line} %{input}" $*
-xbps-query -Rs sync
-xbps-query -Rs synctex
-xbps-query -Rs synctex
-zathura --help
-zathura
-cd ~
-ls
-emacs .spacemacs 
-emacs .spacemacs 
-cd downloads/
-emacs Hello-world.
-emacs --daemon
-killall emacs
-emacs --daemon
-emacs Hello-world.tex 
-edit Hello-world.tex 
 killall emacs
 cd ..
 emacs .spacemacs 
@@ -497,4 +458,43 @@ git commit
 git add stow-all.sh htop/ bash/ zsh/
 git status
 git commit -m "Added files"
+exit
+cd dotfiles/cli/
+ls
+git submodule add emacs/.emacs.d/
+git submodule add ./emacs/.emacs.d/
+git rm emacs/.emacs.d/
+git rm -rf emacs/.emacs.d/
+git rm -rf emacs/.emacs.d/
+ls -a
+edit .gitmodules 
+cd emacs/
+rm -rf .emacs.d/
+git submodule add https://github.com/syl20bnr/spacemacs ~/.emacs.d
+ls
+cd ..
+ls
+ls -a
+nvim .gitmodules 
+cd emacs/
+ls
+ls -a
+git submodule add https://github.com/syl20bnr/spacemacs .emacs.d
+ls
+ls -a
+git status
+git commit -a -m "commiting"
+git submodule add https://github.com/syl20bnr/spacemacs .emacs.d
+killall emacs
+ls -al ~
+ls
+cd ..
+ls
+./stow-all.sh 
+ls -al ~
+emacs
+git status
+git diff emacs/.spacemacs 
+git add emacs/.spacemacs 
+git commit -m "Added spacemacs files as gitmodule"
 exit

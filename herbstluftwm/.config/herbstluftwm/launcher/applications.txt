@@ -1,0 +1,6 @@
+zathura         true    false   false   /home/jason/downloads 
+libreoffice t
+transmission-qt f
+chromium f
+firefox f
+krusader        true    true    false   /home/jason

@@ -6,6 +6,8 @@ xkbcomp $HOME/.config/keyboard/blackbird-keymap.xkb $DISPLAY
 amixer set Master 50%,50%
 amixer set Master mute
 
+xset -b
+
 case "$(hostname)" in
     "warrig")
         exec startxfce4
@@ -20,7 +22,7 @@ case "$(hostname)" in
         xrandr --output LVDS-1 --off
         xrandr --output HDMI-1 --primary
         
-        feh --bd-center $HOME/.backgrounds/blue-blocks-cavern.jpg
+        feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg
         
         exec herbstluftwm 
     ;;

@@ -51,7 +51,7 @@ while read line; do
 
     target="${target}/${line}"
 
-    if [[ "$select_dir" = true ]] && [[ "$line" = "." ]]; then
+    if [[ "$select_dir" = true ]] && ( [[ "$line" = "." ]] || ! ls -d -l $target/*/ > /dev/null 2>&1 ); then
         herbstclient spawn $selected_app $target
         echo "STOP" >&3
         break

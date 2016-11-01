@@ -24,7 +24,7 @@ function update_dmenu
         if [[ "$select_dir" = "true" ]]; then
             { echo "."; echo ".."; ls -d -1 $target/*/; } | xargs basename -a >&3
         else
-            { echo "."; echo ".."; ls -1 "$target"; } >&3
+            { echo ".."; ls -1 "$target"; } >&3
         fi
     fi
 

@@ -8,6 +8,7 @@ app_selected="false"
 selected_app=""
 base_path=""
 target=""
+launch_command=""
 
 function update_dmenu
 {
@@ -33,8 +34,9 @@ while read line; do
     if [[ "$app_selected" = "false" ]]; then
         app_line=$(cat applications.txt | grep -P "^${line}")
 
-        read app_selected with_path select_dir hidden_files base_path <<< $(echo $app_line)
+        read app_selected launch_command with_path select_dir hidden_files base_path <<< $(echo $app_line)
 
+        launch_command="${launch_command/#\~/$HOME}"
         if [[ "$with_path" = "true" ]]; then
             app_selected="true"
             selected_app=$line
@@ -45,7 +47,7 @@ while read line; do
             continue
         else
             echo "STOP" >&3
-            herbstclient spawn $line 
+            herbstclient spawn $launch_command
             break
         fi
     fi
@@ -53,11 +55,11 @@ while read line; do
     target="${target}/${line}"
 
     if [[ "$select_dir" = true ]] && ( [[ "$line" = "." ]] || ! ls -d -l $target/*/ > /dev/null 2>&1 ); then
-        herbstclient spawn $selected_app $target
+        herbstclient spawn $launch_command $target
         echo "STOP" >&3
         break
     elif [ -f "$target" ] && [[ "$select_dir" = "false" ]]; then
-        herbstclient spawn $selected_app $new_target
+        herbstclient spawn $launch_command $target
         echo "STOP" >&3
         break
     fi

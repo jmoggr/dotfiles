@@ -1,6 +1,7 @@
-zathura         true    false   false   /home/jason/downloads 
-libreoffice t
-transmission-qt f
-chromium f
-firefox f
-krusader        true    true    false   /home/jason
+# application   with_path   select_dir  show_hidden base_path
+zathura         true        false       false       /home/jason/downloads 
+libreoffice     true        false       false       $HOME 
+transmission-qt false
+chromium        false
+firefox         false
+krusader        true        true        false       /home/jason 

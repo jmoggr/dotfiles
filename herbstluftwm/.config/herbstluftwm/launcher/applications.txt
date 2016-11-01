@@ -1,7 +1,7 @@
 # application   with_path   select_dir  show_hidden base_path
-zathura         true        false       false       /home/jason/downloads 
-libreoffice     true        false       false       $HOME 
+zathura         true        false       false       ~/downloads 
+libreoffice     true        false       false       ~
 transmission-qt false
 chromium        false
 firefox         false
-krusader        true        true        false       /home/jason 
+krusader        true        true        false       ~

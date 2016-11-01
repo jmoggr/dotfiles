@@ -39,6 +39,7 @@ while read line; do
             app_selected="true"
             selected_app=$line
             target=$base_path
+            target="${target/#\~/$HOME}"
 
             update_dmenu
             continue
@@ -56,7 +57,6 @@ while read line; do
         echo "STOP" >&3
         break
     elif [ -f "$target" ] && [[ "$select_dir" = "false" ]]; then
-        (>&2 echo "$target")
         herbstclient spawn $selected_app $new_target
         echo "STOP" >&3
         break

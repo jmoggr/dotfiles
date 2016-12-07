@@ -171,12 +171,5 @@ hc unlock
 #hc set tree_style '╾│ ├└╼─┐'
 #hc set tree_style '-| |\"---.'
 
-
 hc spawn $HOME/.config/herbstluftwm/lemonbar/hc-lemonbar.sh 
 hc spawn $HOME/.config/herbstluftwm/hc-event-listener.sh 
-
-hc spawn emacs --daemon
-hc spawn urxvtd --quiet --opendisplay
-hc spawn compton 
-
-feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg

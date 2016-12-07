@@ -27,6 +27,7 @@ hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 
 hc keybind $Mod-Return  spawn urxvtc
+hc keybind $Mod-Shift-Return  spawn urxvt
 hc keybind $Mod-Tab     spawn firefox
 hc keybind $Mod-q       spawn /home/jason/.config/herbstluftwm/hc-close-window.sh 
 hc keybind $Mod-r       spawn /home/jason/.config/herbstluftwm/hc-remove-frame.sh

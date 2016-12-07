@@ -52,11 +52,11 @@ battery()
 
 volume() {
 
-    percent=$(amixer get Master | sed -n -r "N;s/^.*\[([0-9]+)\%\].*$/\1/p" | xargs printf "%02d")
+    percent=$(amixer get Master | sed -n -r "s/^.*\[([0-9]+)\%\].*$/\1/p" | head -n 1 | xargs printf "%02d")
     color=""
     icon=""
     
-    if amixer get Master | egrep -q "\[[0-9]{1,2}%\] \[off\]"; then
+    if amixer get Master | egrep -q "\[[0-9]{1,2}%\].*\[off\]"; then
         color="$urgent_color"
     else
         color="$accent_color"
@@ -129,10 +129,10 @@ desktop_pager()
         fi
         
         case ${tag:0:1} in
-            "#") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{B$active_color}  %{B$normal_color}%{A}" ;;
-            ":") pager_string+="%{A:hc_use_tag ${tag:1:2}:}  %{A}" ;;
-            "!") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{F$urgent_color}  %{F$text_color}%{A}" ;;
-            *)   pager_string+="%{A:hc_use_tag ${tag:1:2}:}  %{A}"
+            "#") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{B$active_color}    %{B$normal_color}%{A}" ;;
+            ":") pager_string+="%{A:hc_use_tag ${tag:1:2}:}    %{A}" ;;
+            "!") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{F$urgent_color}    %{F$text_color}%{A}" ;;
+            *)   pager_string+="%{A:hc_use_tag ${tag:1:2}:}    %{A}"
         esac
     done
 
@@ -190,7 +190,7 @@ done | \
     lemonbar -d -u 2 \
         -f "DejaVu:pixelsize=15:antialias=true" \
         -f "DejaVu Sans:pixelsize=15:antialias=true:weight=180" \
-        -f "FontAwesome-15" \
+        -f "FontAwesome-13" \
         -f "DejaVu Sans:pixelsize=15:antialias=true:weight=120" \
         -g x24++ \
 | while read line; do

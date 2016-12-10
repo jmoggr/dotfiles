@@ -28,6 +28,38 @@ previous_line=""
 
 herbstclient -i | while read line; do
 
+
+    if echo "$line" | grep -q 'Mozilla Firefox$'; then
+        echo "$line" | cut -f 2 | xargs xwininfo -id | grep -e "Absolute upper-left [XY]:" -e "Width" -e "Height" | grep -oE "[0-9]+" | tr '\n' ' ' | { read borderX borderY width height 
+        
+            eval $(xdotool getmouselocation --shell)
+
+            if [[ "$X" -lt "$borderX" ]]; then
+                newX=$borderX
+            elif [[ "$X" -gt "$(($borderX + $width))" ]]; then
+                newX=$(($borderX + $width))
+            else
+                newX=$X
+            fi
+
+            if [[ "$Y" -gt "$(($borderY + $height))" ]]; then
+                newY=$(($borderY + $height))
+            elif [[ "$Y" -lt "$borderY" ]]; then
+                newY=$borderY
+            else
+                newY=$Y
+            fi
+
+            xdotool mousemove "$newX" "$newY"
+
+            #echo "borderX: $borderX; borderY: $borderY; width: $width; height: $height"
+            #echo "X: $X; newX: $newX"
+            #echo "Y: $Y; newY: $newY"
+        }
+
+        continue
+    fi
+
     # skip any line with "tag_flags" in it, we don't need this for anything and it can come between a "window_closed" hook and a "window_unmanaged" hook. Not skipping this would require more logic to check if a window_unmanaged came after a window_closed
     if echo $line | grep -q tag_flags; then
         continue

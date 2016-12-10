@@ -1254,7 +1254,7 @@ xkb_symbols "pc+us+inet(evdev)" {
     key <AD11> {         [     bracketleft,       braceleft ] };
     key <AD12> {         [    bracketright,      braceright ] };
     key <RTRN> {         [          Return ] };
-    key <LCTL> {         [       ISO_Level2_Latch ] };
+    key <LCTL> {         [       Control_L ] };
     key <AC01> {
         type= "ALPHABETIC",
         symbols[Group1]= [               a,               A ]

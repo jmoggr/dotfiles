@@ -27,6 +27,7 @@ hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 
 hc keybind $Mod-Return  spawn urxvtc
+hc keybind $Mod-Shift-Return  spawn urxvt
 hc keybind $Mod-Tab     spawn firefox
 hc keybind $Mod-q       spawn /home/jason/.config/herbstluftwm/hc-close-window.sh 
 hc keybind $Mod-r       spawn /home/jason/.config/herbstluftwm/hc-remove-frame.sh
@@ -171,12 +172,5 @@ hc unlock
 #hc set tree_style '╾│ ├└╼─┐'
 #hc set tree_style '-| |\"---.'
 
-
 hc spawn $HOME/.config/herbstluftwm/lemonbar/hc-lemonbar.sh 
 hc spawn $HOME/.config/herbstluftwm/hc-event-listener.sh 
-
-hc spawn emacs --daemon
-hc spawn urxvtd --quiet --opendisplay
-hc spawn compton 
-
-feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg

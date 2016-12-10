@@ -10,7 +10,12 @@ case "$1" in
     ;;
 
     mute) 
-        amixer set Master toggle 
+	# TODO: Find a subsystem agnostic way of muting/unmuting everything or perform a check on whether or not pulse is running
+	# ALSA 
+        # amixer set Master toggle 
+
+	# Pulseaudio - to control all devices at once
+	amixer -q -D pulse set Master toggle
     ;;
 esac
 

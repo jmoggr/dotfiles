@@ -10,6 +10,6 @@ else
 fi
 
 for d in $(git rev-parse --show-toplevel)/*/; do 
-    eval $stow_cmd --dir=$(git rev-parse --show-toplevel) --target=$HOME $(basename $d)
+    eval $stow_cmd --dir=$(git rev-parse --show-toplevel) --restow --target=$HOME $(basename $d)
 done
 

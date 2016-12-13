@@ -36,11 +36,12 @@ bindkey "^[[B" history-beginning-search-forward
 
 setopt PROMPT_SUBST
 
-PROMPT=$'%F{003}┌─%f%(!.%F{001}%n%f.%F{002}%n%f)@%F{004}%m%f:%{$fg_bold[white]%}%~%{$reset_color%}\n%F{003}└─%f$ '
+PROMPT=$'%F{016}┌─%f%(!.%F{001}%n%f.%F{002}%n%f)@%F{004}%m%f:%{$fg_bold[white]%}%~%{$reset_color%}\n%F{016}└─%f$ '
 
+./.config/base16-shell/scripts/base16-default-dark.sh
 
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+#BASE16_SHELL=$HOME/.config/base16-shell/
+#[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 #function mode-coloring {
     #if [[ "$KEYMAP" == "vicmd" ]]; then
         #PROMPT=$'%F{005}┌─%f%(!.%F{001}%n%f.%F{002}%n%f)@%F{004}%m%f:%{$fg_bold[white]%}%~%{$reset_color%}\n%F{005}└─%f$ '

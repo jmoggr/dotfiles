@@ -1,5 +1,8 @@
 execute pathogen#infect()
-"colorscheme base16-oceanicnext
+
+" COLORS
+
+let base16colorspace=256
 colorscheme base16-default-dark
 
 " set the key combination of df to act as an escape

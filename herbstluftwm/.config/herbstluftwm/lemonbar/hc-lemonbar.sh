@@ -190,7 +190,7 @@ done | \
     lemonbar -d -u 2 \
         -f "DejaVu:pixelsize=15:antialias=true" \
         -f "DejaVu Sans:pixelsize=15:antialias=true:weight=180" \
-        -f "FontAwesome-13" \
+        -f "FontAwesome-15" \
         -f "DejaVu Sans:pixelsize=15:antialias=true:weight=120" \
         -g x24++ \
 | while read line; do

@@ -68,6 +68,29 @@ nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
+
+" pasting from primary clipboard
+inoremap <C-P> <ESC>"*pi
+nnoremap <C-P> "*p
+vnoremap <C-P> "*p
+
+" pasting from secondary clipboar
+inoremap <C-S-P> <ESC>"+pi
+nnoremap <C-S-P> "+p
+vnoremap <C-S-P> "+p
+
+"yanking to primary clipboar
+vnoremap <C-Y> "*y 
+
+" yanking to secondary clipboar
+vnoremap <C-S-Y> "+y 
+
+" buffer movement
+nmap <C-J> :bn<CR>
+nmap <C-K> :bp<CR>
+
+"autocmd VimResized * exe "normal \<c-w>="
+
 " PLUGINS
 
 
@@ -85,3 +108,16 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+
+" AUTOCMDS
+
+augroup vimrc_autocmds
+    autocmd!
+    autocmd BufEnter * highlight OverLength ctermbg=18
+    autocmd BufEnter * execute 'match OverLength /.\%>' . &textwidth . 'v.*/'
+
+    autocmd VimEnter * highlight OverLength ctermbg=18
+    autocmd VimEnter * execute 'match OverLength /.\%>' . &textwidth . 'v.*/'
+augroup END
+

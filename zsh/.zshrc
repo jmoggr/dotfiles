@@ -1,7 +1,7 @@
 
 export TERM="rxvt-unicode-256color"
-export VISUAL="emacsclient -t"
-export EDITOR="emacsclient -t"
+export VISUAL="vim"
+export EDITOR="vim"
 
 alias ls='ls --color=auto --human-readable --group-directories-first'
 #

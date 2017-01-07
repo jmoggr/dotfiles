@@ -28,11 +28,16 @@ setopt SHARE_HISTORY
 
 # search through history starting at cursor 
 # http://unix.stackexchange.com/questions/97843/how-can-i-search-history-with-what-is-already-entered-at-the-prompt-in-zsh
-# autoload -U history-search-encd
-# zle -N history-beginning-search-backward-end history-search-end
-bindkey "^[[A" history-beginning-search-backward
-bindkey "^[[B" history-beginning-search-forward
+bindkey "^j" history-beginning-search-backward
+bindkey "^k" history-beginning-search-forward
 
+bindkey "^a" vi-beginning-of-line
+bindkey "^e" end-of-line
+
+bindkey "^r" history-incremental-pattern-search-backward
+
+bindkey '^n' history-incremental-search-backward
+bindkey '^p' history-incremental-search-forward
 
 ./.config/base16-shell/scripts/base16-default-dark.sh
 

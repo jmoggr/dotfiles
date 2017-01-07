@@ -1,8 +1,9 @@
 
-#export TERM="rxvt-unicode-256color"
+# disable signal generated from ctrl-q, the keybinding is recycled in vim
+stty -ixon
+
 export VISUAL="vim"
 export EDITOR="vim"
-
 alias ls='ls --color=auto --human-readable --group-directories-first'
 #
 # http://misc.flogisoft.com/bash/tip_colors_and_formatting

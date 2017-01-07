@@ -40,7 +40,7 @@ bindkey "^r" history-incremental-pattern-search-backward
 bindkey '^n' history-incremental-search-backward
 bindkey '^p' history-incremental-search-forward
 
-./.config/base16-shell/scripts/base16-default-dark.sh
+eval "$(cat ./.config/base16-shell/scripts/base16-default-dark.sh)"
 
 setopt PROMPT_SUBST
 

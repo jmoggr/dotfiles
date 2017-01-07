@@ -69,6 +69,8 @@ PROMPT=$'%F{016}└─%f$ '
 # display whether or not the prompt is in normal (cmd) mode
 #https://dougblack.io/words/zsh-vi-mode.html
 function zle-line-init zle-keymap-select {
+    # TODO: figure out why the rprompt is not displayed on the first prompt of
+    # a new terminal
     VIM_PROMPT="%F{049}[NORMAL]%{$reset_color%}"
     RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
     zle reset-prompt

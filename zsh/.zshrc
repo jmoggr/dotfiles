@@ -15,9 +15,9 @@ setopt nobeep
 alias ls='ls --color=auto --human-readable --group-directories-first'
 
 export HISTFILE=$HOME/.zsh_history
-export SAVEHIST=10000
-export HISTSIZE=10000
-export HISTFILESIZE=10000
+export SAVEHIST=100000
+export HISTSIZE=100000
+export HISTFILESIZE=100000
 
 # Write the history file in the ":start:elapsed;command" format.
 setopt EXTENDED_HISTORY

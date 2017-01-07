@@ -98,14 +98,4 @@ ctrlz () {
 zle -N ctrlz
 bindkey '^Z' ctrlz
 
-#zle -N zle-line-input mode-coloring
-#zle -N zle-keymap-select mode-coloring
-#bindkey '^Z' ctrlz
-#bindkey -v
-#export KEYTIMEOUT=1
-
-#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
-#export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
-#export HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=''
 #source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh

@@ -1,5 +1,5 @@
 
-export TERM="rxvt-unicode-256color"
+#export TERM="rxvt-unicode-256color"
 export VISUAL="vim"
 export EDITOR="vim"
 
@@ -11,7 +11,6 @@ alias ls='ls --color=auto --human-readable --group-directories-first'
 LS_COLORS=$LS_COLORS:'ex=1;38;5;40:di=1;38;5;05:ln=1;38;5;226:ow=1;38;5;196:' ; export LS_COLORS
 
 setopt nobeep
-alias edit='emacsclient -t'
 
 alias ls='ls --color=auto --human-readable --group-directories-first'
 
@@ -34,27 +33,54 @@ setopt SHARE_HISTORY
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
 
-setopt PROMPT_SUBST
-
-PROMPT=$'%F{016}┌─%f%(!.%F{001}%n%f.%F{002}%n%f)@%F{004}%m%f:%{$fg_bold[white]%}%~%{$reset_color%}\n%F{016}└─%f$ '
 
 ./.config/base16-shell/scripts/base16-default-dark.sh
 
-#BASE16_SHELL=$HOME/.config/base16-shell/
-#[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-#function mode-coloring {
-    #if [[ "$KEYMAP" == "vicmd" ]]; then
-        #PROMPT=$'%F{005}┌─%f%(!.%F{001}%n%f.%F{002}%n%f)@%F{004}%m%f:%{$fg_bold[white]%}%~%{$reset_color%}\n%F{005}└─%f$ '
-    #else
-        #PROMPT=$'%F{003}┌─%f%(!.%F{001}%n%f.%F{002}%n%f)@%F{004}%m%f:%{$fg_bold[white]%}%~%{$reset_color%}\n%F{003}└─%f$ '
-    #fi
+setopt PROMPT_SUBST
 
-    #zle reset-prompt
-#}
+# use vi keybindings and modes in the line editor
+bindkey -v
+
+# When changing to cmd mode for vi editing we want to update the prompt to show
+# that we are in cmd mode. However redrawing the prompt only redraws one line,
+# so this updating would visually break multiline prompts. However if the first
+# line is static, we can print that prompt line statically and only update the
+# second line dynamically.
+
+# Print the first line of prompt before the actual prompt is displayed. This
+# line is static
+#http://superuser.com/questions/974908/multiline-rprompt-in-zsh
+precmd() {
+    # TODO: find out what print -P does
+    print -P $'%F{016}┌─%f%(!.%F{001}%n%f.%F{002}%n%f)@%F{004}%m%f:%{$fg_bold[white]%}%~%{$reset_color%}'
+}
+
+# Set the second line of prompt, this is the actual prompt
+PROMPT=$'%F{016}└─%f$ '
+
+# use vi keybindings and enable vi modes
+
+# display whether or not the prompt is in normal (cmd) mode
+#https://dougblack.io/words/zsh-vi-mode.html
+function zle-line-init zle-keymap-select {
+    VIM_PROMPT="%F{049}[NORMAL]%{$reset_color%}"
+    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
+    zle reset-prompt
+}
+
+# event hooks to change vi mode indicator
+zle -N zle-line-init
+zle -N zle-keymap-select
+
+# Removes delay when escaping viins with the esc key, but breaks multikey
+# escape sequences
+#export KEYTIMEOUT=1
+
+# use 'df' to exit vi insert mode
+# http://superuser.com/questions/351499/how-to-switch-comfortably-to-vi-command-mode-on-the-zsh-command-line
+bindkey -M viins 'df' vi-cmd-mode
 
 
-
-##bindkey -v
 
 ctrlz () {
   if [[ $#BUFFER -eq 0 ]]; then

@@ -7,6 +7,9 @@ colorscheme base16-default-dark
 
 " OPTIONS
 
+" disable .netrwhist file
+let g:netrw_dirhistmax = 0
+
 syntax on
 filetype plugin indent on
 

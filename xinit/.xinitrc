@@ -36,7 +36,6 @@ case "$(hostname)" in
 
 
         # start user daemons
-        emacs --daemon
         urxvtd --quiet --opendisplay -f
         compton -b
 

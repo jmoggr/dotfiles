@@ -10,7 +10,13 @@ xset -b
 
 case "$(hostname)" in
     "warrig")
-        exec startxfce4
+        urxvtd --quiet --opendisplay -f
+        compton -b
+
+        feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg
+            
+        # start window manager
+        exec herbstluftwm 
     ;;
     "thenux")
         # setup screen

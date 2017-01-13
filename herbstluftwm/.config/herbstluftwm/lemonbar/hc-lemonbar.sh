@@ -28,12 +28,25 @@ time_of_day()
 
 battery() 
 {
-    capacity=$(cat /sys/class/power_supply/BAT/capacity | xargs printf "%02d")
-    status=$(cat /sys/class/power_supply/BAT/status)
+    AC_pattern="/sys/class/power_supply/AC*"
+    AC_dirs=( $AC_pattern )
+    AC_path="${AC_dirs[0]}"
+    AC_status=$(cat $AC_path/online)
 
-    icon=""
+    BAT_pattern="/sys/class/power_supply/BAT*"
+    BAT_dirs=( $BAT_pattern )
+    BAT_path="${BAT_dirs[0]}"
 
-    if [[ "$capacity" -ge "80" ]]; then
+    capacity=$(cat $BAT_pattern/capacity | xargs printf "%02d")
+    status=$(cat $BAT_pattern/status)
+        
+    if [[ "$capacity" == "99" ]]; then
+        capacity=100
+    fi
+
+    if [[ "$AC_status" == "1" ]]; then
+        icon=""
+    elif [[ "$capacity" -ge "80" ]]; then
         icon=""
     elif [[ "$capacity" -ge "60" ]] && [[ "$capacity" -lt "80" ]]; then
         icon=""
@@ -87,7 +100,7 @@ cpuload()
 
 temperature() 
 {
-    temp=$(cat /sys/class/thermal/thermal_zone1/temp)
+    temp=$(cat /sys/class/thermal/thermal_zone0/temp)
     temp=${temp::-3}
 
     percent=$(((((temp - 40) * 10)/6)))

@@ -115,8 +115,10 @@ temperature()
 memused() {
     read total available <<< `grep -E 'Mem(Total|Available)' /proc/meminfo | awk '{print $2}'`
 
+    # TODO what if zfs isn't being used, or the file cannot be read?
+    arc_size=$(awk '/^size/ { print $3 }' < /proc/spl/kstat/zfs/arcstats)
     icon=""
-    mem_use_percent=$((100 - ($available * 100) / $total))
+    mem_use_percent=$((100 - ($available * 100) / ($total - $arc_size/1024)))
 
     hex_color=$(get_urgency_colour $mem_use_percent)
 

@@ -173,5 +173,14 @@ hc unlock
 #hc set tree_style '╾│ ├└╼─┐'
 #hc set tree_style '-| |\"---.'
 
+case "$(hostname)" in
+    "warrig")
+        hc spawn $HOME/.config/herbstluftwm/hc-warrig.sh 
+    ;;
+    "doofwagon")
+        :
+    ;;
+esac
+
 hc spawn $HOME/.config/herbstluftwm/lemonbar/hc-lemonbar.sh 
 hc spawn $HOME/.config/herbstluftwm/hc-event-listener.sh 

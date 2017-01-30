@@ -47,6 +47,7 @@ hc keybind $Mod-l     focus right
 hc keybind F1   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh mute 
 hc keybind F2   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh down
 hc keybind F3   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh up
+hc keybind F7   spawn $HOME/.config/herbstluftwm/hc-toggle-frame.sh 
 
 hc keybind $Mod-p pseudotile toggle
 
@@ -171,6 +172,15 @@ hc unlock
 # set styling for pretty printed herbstluftwm object trees
 #hc set tree_style '╾│ ├└╼─┐'
 #hc set tree_style '-| |\"---.'
+
+case "$(hostname)" in
+    "warrig")
+        hc spawn $HOME/.config/herbstluftwm/hc-warrig.sh 
+    ;;
+    "doofwagon")
+        :
+    ;;
+esac
 
 hc spawn $HOME/.config/herbstluftwm/lemonbar/hc-lemonbar.sh 
 hc spawn $HOME/.config/herbstluftwm/hc-event-listener.sh 

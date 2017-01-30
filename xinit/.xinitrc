@@ -48,4 +48,15 @@ case "$(hostname)" in
         # start window manager
         exec herbstluftwm 
     ;;
+    "doofwagon")
+        # start user daemons
+        urxvtd --quiet --opendisplay -f
+        compton -b
+
+        # set background
+        feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg
+
+        # start window manager
+        exec herbstluftwm
+    ;;
 esac

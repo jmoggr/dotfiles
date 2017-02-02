@@ -123,33 +123,79 @@ memused() {
     echo "%{F${hex_color}}%{+u}%{U${hex_color}}$icon%{F${text_color}} $mem_use_percent%%{-u}"
 }
 
+# Creates a desktop pager
+#
+# The pager consists of a line of icons, each represnting the state of a
+# workspace. When clicked the icons echo their name in the form 
+# 'hc_use_tag $name', this may be used to focus on different workspaces.
+#
+# see the tag_status command in herbstluftwm for a list of valid tag states and
+# the characters that represent the states.
 desktop_pager() 
 {
-    pager_string="%{F$text_color}"
+    # the status of each workspace is a combination of the status of the
+    # workspaces desktop and hidden tags. States are combined in the
+    # workspace_status_chars array with each element containing a string
+    # of the combined statuses.
+    declare -A workspace_status_chars
 
+    pager_string=""
+    focussed_tag=$(herbstclient attr tags.focus.name)
+
+    # loop over each tag 
     for tag in `herbstclient tag_status`; do
+        # if the tag is part of a valid workspace 
+        if [[ $tag =~ [\.\:\+\#\-\%\!]h?[1-6] ]]; then
+            # get the workspace number
+            workspace_number=$(sed 's/[^1-9]*//g' <<< $tag)
 
-        visible_tag_found=false
-        for visible_tag in {1..6}; do
-            if [[ "${tag:1:2}" == "$visible_tag" ]]; then
-                visible_tag_found=true
-                break
-            fi
-        done
+            # get the tag state character
+            tag_symbol=${tag:0:1}
 
-        if [[ "$visible_tag_found" != "true" ]]; then
-            continue
+            # add the new state character to the workspace state string
+            workspace_status_chars[$workspace_number]+=$tag_symbol
         fi
-        
-        case ${tag:0:1} in
-            "#") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{B$active_color}    %{B$normal_color}%{A}" ;;
-            ":") pager_string+="%{A:hc_use_tag ${tag:1:2}:}    %{A}" ;;
-            "!") pager_string+="%{A:hc_use_tag ${tag:1:2}:}%{F$urgent_color}    %{F$text_color}%{A}" ;;
-            *)   pager_string+="%{A:hc_use_tag ${tag:1:2}:}    %{A}"
-        esac
     done
 
-    echo "${pager_string}"
+    # loop for each workspace, workspaces are indexed at 1
+    for ((i = 1 ; i < ${#workspace_status_chars[@]} + 1 ; i++)); do
+        status_chars=${workspace_status_chars[$i]}
+
+        # default settings for each workspace icon
+        foreground_color=$text_color
+        background_color=$normal_color
+        tag_status_icon=""  
+
+        # if the workspace is focussed and urgent
+        if [[ $i == $focussed_tag ]] && [[ $status_chars == *"!"* ]]; then
+            foreground_color="$urgent_color"
+            tag_status_icon=""
+            background_color=$active_color
+
+        # if the workspace is focussed
+        elif [[ $i == $focussed_tag ]]; then
+            background_color=$active_color
+            tag_status_icon=""
+
+        # if the workspace is urgent
+        elif [[ $status_chars == *"!"* ]]; then
+            foreground_color="$urgent_color"
+            tag_status_icon=""
+
+        # if the workspace has a window
+        elif [[ $status_chars == *":"* ]]; then
+            tag_status_icon=""
+        fi
+
+        # build the icon onto the pager
+        pager_string+="%{A:hc_use_tag ${tag:1:2}:}"
+        pager_string+="%{B$background_color}%{F$foreground_color}"
+        pager_string+="  $tag_status_icon  "
+        pager_string+="%{B$normal_color}%{F$text_color}"
+    done
+
+    # print the pager to the lemonbar
+    echo "$pager_string"
 }
 
 hidden_window_count() 
@@ -203,7 +249,7 @@ done | \
     lemonbar -d -u 2 \
         -f "DejaVu:pixelsize=15:antialias=true" \
         -f "DejaVu Sans:pixelsize=15:antialias=true:weight=180" \
-        -f "FontAwesome-15" \
+        -f "FontAwesome-13" \
         -f "DejaVu Sans:pixelsize=15:antialias=true:weight=120" \
         -g x24++ \
 | while read line; do

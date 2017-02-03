@@ -1,20 +1,25 @@
 #!/bin/bash
 
+# Script changes volume based on arguments
+#
+# Setting a default audio device/sink should preferable to  changing this 
+# script. This can be done in the ~/.asoundrc file. Recommended that the 
+# default be pulse.
+
 case "$1" in
     up)
-        amixer -q set Master 2%+ 
+        #pactl set-sink-volume 0 +2%
+        amixer set Master 2%+,2%+
     ;;
 
     down)
-        amixer -q set Master 2%- 
+        #pactl set-sink-volume 0 -2%
+        amixer set Master 2%-,2%-
     ;;
 
     mute) 
-        if pactl list 2>&1 > /dev/null; then
-	        amixer -q -D pulse set Master toggle
-        elif aplay -l 2>&1 > /dev/null; then
-            amixer -q set Master toggle 
-        fi
+        # Default device should be pulse. 
+        amixer set Master toggle
     ;;
 esac
 

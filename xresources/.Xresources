@@ -25,7 +25,9 @@ URxvt.keysym.Control-Shift-V: perl:pasta:paste
 
 ! hide scrollbar
 URxvt*scrollBar: false
-!URxvt.letterSpace: 1
+
+! Fixes underscore not appearing in some fonts
+! https://bbs.archlinux.org/viewtopic.php?pid=1619832#p1619832
 URxvt.lineSpace: 1
 
 URxvt.font: xft:DejaVu Sans Mono for Powerline:size=10.5:antialias=true:autohint=true

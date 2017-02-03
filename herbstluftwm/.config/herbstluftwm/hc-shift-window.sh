@@ -1,7 +1,9 @@
 #!/bin/bash
 
-current_tag=$(herbstclient attr tags.focus.name)
-hidden_tag="h$current_tag"
+source ~/.config/herbstluftwm/hc-lib.sh
+
+desktop_tag=$(herbstclient attr tags.focus.name)
+hidden_tag="h$desktop_tag"
 
 if [ "left" == "$1" ]; then
     direction="left"
@@ -19,82 +21,58 @@ else
     exit 1
 fi
 
+focus_winID=$(herbstclient attr clients.focus.winid)
+if [ "$?" != "0" ]; then
+    focus_winID=0
+fi
+    
 herbstclient lock
-current_focus=$(herbstclient attr clients.focus.winid)
 
-result="$((herbstclient focus $direction) 2>&1)"
-
-if [ "$result" == "focus: No neighbour found" ]; then
+herbstclient focus $direction
+if [ "$?" != "0" ]; then
     herbstclient unlock
     exit 0
 fi
 
-opposite_focus=$(herbstclient attr clients.focus.winid)
-opposite_status=$?
-
-herbstclient focus $opposite
-herbstclient unlock
-
-#hidden_layout=$(herbstclient dump $hidden_tag)
-#current_layout=$(herbstclient dump $current_tag)
-
-#move_focus=$(herbstclient attr clients.focus.winid)
-
-echo $opposite_focus
-
-new_focus=$(herbstclient dump $hidden_tag | egrep -o "0x[0-9a-z]{6,}" | head -n 1 )
-
-if [[ -z "${new_focus// }" ]] && [[ "$opposite_status" == 0 ]]; then
-
-    echo "case 1"
-    herbstclient chain . lock . move $hidden_tag . focus $direction . move $hidden_tag . unlock
-    sleep 0.12
-    herbstclient chain . lock . focus $opposite . bring $opposite_focus . focus $direction . bring $current_focus . unlock
-
-
-elif [[ "${new_focus// }" ]] && [[ "$opposite_status" != 0 ]]; then
-    echo "case 2"
-    herbstclient chain . lock . move $hidden_tag . bring $new_focus . unlock 
-    herbstclient focus $direction
-    sleep 0.12 
-    herbstclient chain . lock . bring $current_focus . unlock 
-
-elif [[ "${new_focus// }" ]] && [[ "$opposite_status" == 0 ]]; then
-    echo "case 3"
-    herbstclient chain . lock . move $hidden_tag . bring $new_focus . unlock 
-    herbstclient focus $direction
-    sleep 0.12 
-    herbstclient chain . lock . move $hidden_tag . bring $current_focus . unlock 
-
-elif [[ -z "${new_focus// }" ]] && [[ "$opposite_status" != 0 ]]; then
-    echo "case 4"
-    herbstclient move $hidden_tag
-    herbstclient focus $direction
-    sleep 0.12
-    herbstclient bring $current_focus
+opposite_winID=$(herbstclient attr clients.focus.winid)
+if [ "$?" != "0" ]; then
+    opposite_winID=0
 fi
 
+herbstclient focus $opposite
 
-#hidden_layout=$(echo $hidden_layout | sed -r "s/(^[^\)]+)(\))/\1 ${move_focus}\2/")
-#hidden_layout=$(echo $hidden_layout | sed -r "s/$new_focus//")
+herbstclient unlock
 
-#current_layout=$(echo $current_layout | sed -r "s/${current_focus}/${new_focus}/")
-#current_layout=$(echo $current_layout | sed -r "s/${move_focus}/${current_focus}/")
+# If there is a window in both the opposite  and focused frame
+if [[ "$opposite_winID" != 0 ]] && [[ "$focus_winID" != 0 ]]; then
+    
+    Hidden_Push_Back $hidden_tag $focus_winID
+    Hidden_Push_Back $hidden_tag $opposite_winID
 
-#echo $current_layout
-#echo ""
-#echo $hidden_layout
+    Bring_Window $desktop_tag $opposite_winID
 
-#herbstclient load $hidden_tag "${hidden_layout}" 
-#echo "HERE"
-#herbstclient load $current_tag "${current_layout}"
+    herbstclient focus $direction
 
-#herbstclient chain . lock . move $hidden_tag . bring $new_focus . unlock 
+    Bring_Window $desktop_tag $focus_winID
 
+# If there is a window in the opposite frame but not the focused 
+elif [[ "$opposite_winID" == 0 ]] && [[ "$focus_winID" != 0 ]]; then
+    Hidden_Push_Back $hidden_tag $focus_winID
 
+    herbstclient focus $direction
 
-#herbstclient . focus $direction . move $hidden_tag . bring $current_focus . focus $opposite . bring $new_focus . focus $direction
+    Bring_Window $desktop_tag $focus_winID
 
-#herbstclient chain . focus $opposite . move $hidden_tag . focus $direction . move $hidden_tag . bring $current_focus . focus $opposite . bring $new_focus . focus $direction
-#herbstclient chain . move $hidden_tag . bring $current_focus . focus $opposite . bring $new_focus . focus $direction
+# If there is no window in the opposite frame but one in the focused
+elif [[ "$opposite_winID" != 0 ]] && [[ "$focus_winID" == 0 ]]; then
+    Hidden_Push_Back $hidden_tag $opposite_winID
+
+    Bring_Window $desktop_tag $opposite_winID
+
+    herbstclient focus $direction
+
+# if there is no window in the opposite framed or the focused fram
+else
+    herbstclient focus $direction
+fi
 

@@ -11,7 +11,7 @@ hidden_layout=$(herbstclient dump $hidden_tag)
 
 window_moved=false
 
-for extra_winid in `herbstclient layout $current_tag | egrep "0x[0-9a-z]{6,} .*?0x[0-9a-z]{6,}" | egrep -o "0x[0-9a-z]{6,}" | head -n -1`; do
+for extra_winid in `herbstclient layout $current_tag | egrep "0x[0-9a-z]{6,} .*?0x[0-9a-z]{6,}" | egrep -o "0x[0-9a-z]{6,}" | tail -n -1`; do
 
     # add window to back of hidden tag
     hidden_layout=$(echo $hidden_layout | sed -r "s/(^[^\)]+)(\))/\1 ${extra_winid}\2/")
@@ -19,6 +19,7 @@ for extra_winid in `herbstclient layout $current_tag | egrep "0x[0-9a-z]{6,} .*?
 done
 
 if [[ "$window_moved" == "true" ]]; then
+    echo "ballancing windows change" >> ~/hce.out
     herbstclient load $hidden_tag "$hidden_layout"
 fi
 

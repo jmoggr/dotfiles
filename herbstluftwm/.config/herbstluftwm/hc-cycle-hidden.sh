@@ -1,49 +1,55 @@
 #!/bin/bash
 
+source ~/.config/herbstluftwm/hc-lib.sh
+
 current_tag=$(herbstclient attr tags.focus.name)
 hidden_tag="h$current_tag"
 
 hidden_tag_focused=false
 current_tag_focused=false
 
-if ! herbstclient attr tags.by-name | grep -q $hidden_tag; then
-    herbstclient add $hidden_tag 
-    exit 0
-fi
-
-if herbstclient dump $hidden_tag | egrep -q "0x[0-9a-z]{6,}"; then
-    hidden_tag_focused=true
-fi
-
+# if there is a focused window
 if herbstclient attr clients | grep -q "focus"; then
     current_tag_focused=true
 fi
 
+# if there is a window in the hidden tag to cycle with
+if herbstclient dump $hidden_tag | egrep -q "0x[0-9a-z]{6,}"; then
+    hidden_tag_focused=true
+fi
+
+# if there is more than one window in the focussed frame, move the top window to
+# the hidden tag
+# this should never happen: there should never be more than one window per frame
 if [ "$(herbstclient layout | grep "FOCUS" | egrep -o "0x[0-9a-z]{6,}" | wc -l)" -gt 1 ]; then
-    herbstclient chain . lock . move $hidden_tag . unlock
+
+    # move a window in the overfull frame to the hidden tag
+    current_focus=$(herbstclient attr clients.focus.winid)
+    Hidden_Push_Back $current_focus $hidden_tag
+
+    $HOME/.config/herbstluftwm/hc-input-dirty.sh
     exit 0
 fi
 
-hidden_layout=$(herbstclient dump $hidden_tag)
-#new_layout_current=$(herbstclient dump $current_tag)
-
-# There is a window in the hidden tag and current tag
+# if there is a window in the hidden tag and desktop tag
 if [ "$hidden_tag_focused" == true ] && [ "$current_tag_focused" == true ]; then
 
-    new_focus=$(herbstclient dump $hidden_tag | egrep -o "0x[0-9a-z]{6,}" | head -n 1 )
-
+    # move the focused window to the hidden tag
     current_focus=$(herbstclient attr clients.focus.winid)
+    Hidden_Push_Back $hidden_tag $current_focus
 
-    hidden_layout=$(echo $hidden_layout | sed -r "s/(^[^\)]+)(\))/\1 ${current_focus}\2/")
-    hidden_layout=$(echo $hidden_layout | sed -r "s/$new_focus//")
+    # move a window in the hidden tag to the dekstop tag
+    Hidden_Pop_Front $hidden_tag $current_tag
+    $HOME/.config/herbstluftwm/hc-input-dirty.sh
 
-    herbstclient chain . lock . move $hidden_tag . bring $new_focus . unlock 
-    herbstclient load $hidden_tag "$hidden_layout"
-
-# There is a window in the hidden tag but none in the current tag
+# if there is a window in the hidden tag but none in the current tag
+# this should never happen: windows should be automatically filled into frames
+# whenevr possible
 elif [ "$hidden_tag_focused" == true ] && [ "$current_tag_focused" == false ]; then
-    new_focus=$(herbstclient dump $hidden_tag | egrep -o "0x[0-9a-z]{6,}" | tail -n 1 )
 
-    herbstclient chain . lock . bring $new_focus . unlock
+    # move a window in the hidden tag to the desktop tag
+    Hidden_Pop_Front $hidden_tag $current_tag
+
+    $HOME/.config/herbstluftwm/hc-input-dirty.sh
 fi
 

@@ -88,7 +88,10 @@ for i in ${tag_names[@]} ; do
     hc keybind "$Mod-Shift-$i" spawn /home/jason/.config/herbstluftwm/hc-shift-desktop.sh "$i"
 done
 
+# use the first newly created tag
 hc use ${tag_names[0]} 
+
+# remove the default tag and add it's windows to the first newly crated tag
 hc merge_tag default ${tag_names[0]} 
 
 # layouting

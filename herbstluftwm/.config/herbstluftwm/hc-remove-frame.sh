@@ -3,11 +3,6 @@
 current_tag=$(herbstclient attr tags.focus.name)
 hidden_tag="h$current_tag"
 
-if ! herbstclient attr tags.by-name | grep -q $hidden_tag; then
-    herbstclient add $hidden_tag 
-fi
-
-
 herbstclient lock
 if [ $(herbstclient layout | wc -l) -gt 1 ]; then
 

@@ -16,7 +16,8 @@ case "$(hostname)" in
         feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg
             
         # start window manager
-        exec herbstluftwm 
+        exec herbstluftwm >> ~/herbst.out
+        #exec startxfce4 
     ;;
     "thenux")
         # setup screen

@@ -25,9 +25,10 @@ URxvt.keysym.Control-Shift-V: perl:pasta:paste
 
 ! hide scrollbar
 URxvt*scrollBar: false
-URxvt.letterSpace: 1
+!URxvt.letterSpace: 1
+URxvt.lineSpace: 1
 
-URxvt.font: xft:DejaVu Sans Mono for Powerline:size=12.5:antialias=true:autohint=true
+URxvt.font: xft:DejaVu Sans Mono for Powerline:size=10.5:antialias=true:autohint=true
 
 URxvt.keysym.C-f: \032
 

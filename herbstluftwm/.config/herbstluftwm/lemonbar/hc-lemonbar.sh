@@ -13,7 +13,6 @@ function get_urgency_colour
     echo $hex_color
 }
 
-
 calendar_date() 
 {
     date_string=$(date '+%a %b %d')
@@ -29,38 +28,45 @@ time_of_day()
 battery() 
 {
     AC_pattern="/sys/class/power_supply/AC*"
-    AC_dirs=( $AC_pattern )
-    AC_path="${AC_dirs[0]}"
-    AC_status=$(cat $AC_path/online)
-
     BAT_pattern="/sys/class/power_supply/BAT*"
-    BAT_dirs=( $BAT_pattern )
-    BAT_path="${BAT_dirs[0]}"
 
-    capacity=$(cat $BAT_pattern/capacity | xargs printf "%02d")
-    status=$(cat $BAT_pattern/status)
-        
-    if [[ "$capacity" == "99" ]]; then
-        capacity=100
-    fi
-
-    if [[ "$AC_status" == "1" ]]; then
+    if  ! ls -A $AC_pattern  > /dev/null 2>&1 || ! ls -A $BAT_pattern 2>&1 > /dev/null; then
         icon=""
-    elif [[ "$capacity" -ge "80" ]]; then
-        icon=""
-    elif [[ "$capacity" -ge "60" ]] && [[ "$capacity" -lt "80" ]]; then
-        icon=""
-    elif [[ "$capacity" -ge "40" ]] && [[ "$capacity" -lt "60" ]]; then
-        icon=""
-    elif [[ "$capacity" -ge "20" ]] && [[ "$capacity" -lt "40" ]]; then
-        icon=""
-    else
-        icon=""
+        hex_color="#00B200"
+        echo "%{F${hex_color}}$icon%{F$text_color}"
+    else 
+        AC_dirs=( $AC_pattern )
+        AC_path="${AC_dirs[0]}"
+        AC_status=$(cat $AC_path/online)
+
+        BAT_dirs=( $BAT_pattern )
+        BAT_path="${BAT_dirs[0]}"
+
+        capacity=$(cat $BAT_pattern/capacity | xargs printf "%02d")
+        status=$(cat $BAT_pattern/status)
+            
+        if [[ "$capacity" == "99" ]]; then
+            capacity=100
+        fi
+
+        if [[ "$AC_status" == "1" ]]; then
+            icon=""
+        elif [[ "$capacity" -ge "80" ]]; then
+            icon=""
+        elif [[ "$capacity" -ge "60" ]] && [[ "$capacity" -lt "80" ]]; then
+            icon=""
+        elif [[ "$capacity" -ge "40" ]] && [[ "$capacity" -lt "60" ]]; then
+            icon=""
+        elif [[ "$capacity" -ge "20" ]] && [[ "$capacity" -lt "40" ]]; then
+            icon=""
+        else
+            icon=""
+        fi
+
+        hex_color=$(get_urgency_colour $((100 - $capacity)))
+
+        echo "%{F${hex_color}}%{+u}%{U${hex_color}}$icon%{F$text_color} $capacity%%{-u}"
     fi
-
-    hex_color=$(get_urgency_colour $((100 - $capacity)))
-
-    echo "%{F${hex_color}}%{+u}%{U${hex_color}}$icon%{F$text_color} $capacity%%{-u}"
 }
 
 volume() {

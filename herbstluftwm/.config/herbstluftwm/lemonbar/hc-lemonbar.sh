@@ -190,10 +190,11 @@ desktop_pager()
         fi
 
         # build the icon onto the pager
-        pager_string+="%{A:hc_use_tag ${tag:1:2}:}"
+        pager_string+="%{A:hc_use_tag $i:}"
         pager_string+="%{B$background_color}%{F$foreground_color}"
         pager_string+="  $tag_status_icon  "
         pager_string+="%{B$normal_color}%{F$text_color}"
+        pager_string+="%{A}"
     done
 
     # print the pager to the lemonbar

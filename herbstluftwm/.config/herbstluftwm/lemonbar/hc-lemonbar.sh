@@ -234,30 +234,26 @@ fade_in()
     echo $fade
 }
 
+print_lemonbar_string() 
+{
+echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)  $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
+}
+
 var=250
-update="false"
 watch_file="/tmp/hc-input-flag"
+
+touch $watch_file
+
+$(sleep 0.1 && touch $watch_file) &
 
 # This loop will fill a buffer with our infos, and output it to stdout.
 while :; do
     ((var++))
 
-    if [ "$var" -ge 250 ]; then
-        var=0
-        update="true"
-    fi
-        
-    if [ -f "$watch_file" ]; then
-        rm "$watch_file"
-        update="true"
+
     fi
 
-    if [ "$update" == "true" ]; then
-        echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)  $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
-        update="false"
-    fi
-
-    sleep 0.02 
+    print_lemonbar_string
 
 done | \
     lemonbar -d -u 2 \

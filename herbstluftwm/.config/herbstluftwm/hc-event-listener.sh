@@ -117,7 +117,7 @@ previous_line=""
 herbstclient -i | while read line; do
 
     if echo "$line" | grep -q 'Mozilla Firefox$'; then
-        Firefox_Focussed_Handler $line
+        Firefox_Focused_Handler "$line"
         continue
     fi
 

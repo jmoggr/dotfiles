@@ -95,6 +95,10 @@ Window_Closed_Handler ()
     current_tag=$(herbstclient attr tags.focus.name)
     hidden_tag="h$current_tag"
 
+    # sometimes it takes a short period for the closed window to be removed from
+    # the layout
+    sleep 0.02
+
     # if there exists an empty frame in the current tag
     if herbstclient dump $current_tag | egrep -q "\(clients (grid|horizontal|vertical|max):(0|1)\)"; then
         # get a window from the bottom of the queue in the hidden tag

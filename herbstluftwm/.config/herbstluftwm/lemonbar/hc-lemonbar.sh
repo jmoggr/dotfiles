@@ -81,7 +81,12 @@ volume() {
         color="$accent_color"
     fi
 
-    echo "%{F${color}}%{+u}%{U${color}}${icon}%{F$text_color} %{T0}${percent}%%{-u}"
+    volume_widget="%{F${color}}%{+u}%{U${color}}"
+    volume_widget+="%{A1:volume mute:}%{A4:volume up:}%{A5:volume down:}"
+    volume_widget+="${icon}%{F$text_color} %{T0}${percent}%%{-u}"
+    volume_widget+="%{A}%{A}%{A}"
+
+    echo "$volume_widget"
 }
 
 cpuload() 
@@ -265,6 +270,9 @@ done | \
     if [[ "$line" =~ ^hc_use_tag.* ]]; then
         tag=$(echo "$line" | cut -f 2 -d' ')
         $HOME/.config/herbstluftwm/hc-use-desktop.sh $tag
+    elif [[ "$line" =~ ^volume.* ]]; then
+        cmd=$(cut -f 2 -d' ' <<< "$line")
+        $HOME/.config/herbstluftwm/hc-volume-control.sh $cmd
     fi
 done
 

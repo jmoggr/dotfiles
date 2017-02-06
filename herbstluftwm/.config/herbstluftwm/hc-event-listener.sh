@@ -75,6 +75,7 @@ Window_Opened_Handler ()
             if herbstclient layout $current_tag | egrep "0x[0-9a-z]{6,}.*0x[0-9a-z]{6,}" | grep -q ${new_winID}; then
                 # set the new window to urgent to notify that there is a new
                 # window that is hidden
+                echo "pulse" > /tmp/hc-input-flag
                 herbstclient set_attr .clients."$new_winID".urgent true 
             fi
 
@@ -87,7 +88,6 @@ Window_Opened_Handler ()
 
     fi
 
-    $HOME/.config/herbstluftwm/hc-input-dirty.sh
 }
 
 Window_Closed_Handler () 

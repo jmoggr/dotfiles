@@ -50,10 +50,6 @@ Firefox_Focused_Handler ()
         fi
 
        xdotool mousemove "$newX" "$newY"
-
-        #echo "borderX: $borderX; borderY: $borderY; width: $width; height: $height"
-        #echo "X: $X; newX: $newX"
-        #echo "Y: $Y; newY: $newY"
     }
 }
 

@@ -40,7 +40,11 @@ bindkey "^r" history-incremental-pattern-search-backward
 bindkey '^n' history-incremental-search-backward
 bindkey '^p' history-incremental-search-forward
 
-eval "$(cat ./.config/base16-shell/scripts/base16-default-dark.sh)"
+
+# base16 scripts don't support linux console (tty)
+if [ "${TERM%%-*}" != 'linux' ]; then
+    eval "$(cat ./.config/base16-shell/scripts/base16-default-dark.sh)"
+fi
 
 setopt PROMPT_SUBST
 

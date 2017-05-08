@@ -50,6 +50,12 @@ set textwidth=80
 " show line numbers relative to the cursor in the left margin
 set relativenumber
 
+" show the current line number on the cursror line
+set number
+
+" highlight cursor line
+set cursorline
+
 " map ; to : in all modes to aviod having to press shift to enter commands
 map ; :
 

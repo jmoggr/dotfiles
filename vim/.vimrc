@@ -123,7 +123,6 @@ let g:syntastic_check_on_wq = 0
 
 
 " AUTOCMDS
-
 augroup vimrc_autocmds
     autocmd!
     autocmd BufEnter * highlight OverLength ctermbg=18
@@ -131,5 +130,57 @@ augroup vimrc_autocmds
 
     autocmd VimEnter * highlight OverLength ctermbg=18
     autocmd VimEnter * execute 'match OverLength /.\%>' . &textwidth . 'v.*/'
+
+    autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 expandtab
 augroup END
+
+
+set showtabline=0
+nnoremap <C-e> :call ToggleFullscreen()<CR>        
+
+function Inittoggle()
+    let g:pastColumns = &columns
+endfunction
+
+autocmd VimEnter * :call Inittoggle()
+autocmd VimResized * :call ToggleFullscreen()
+
+" the minimum number of columns in a vim window (desktop window/terminal, not vim
+" window) for that window to be classified as fullscreen
+let g:minWinCol = 120
+
+function ToggleFullscreen()
+    " if the terminal/desktop window got bigger
+    if &columns > g:minWinCol && g:pastColumns <= g:minWinCol
+        " if there is more than one tab
+        if tabpagenr("$") != 1
+            " move to the next (fullscreen) tab
+            tabn
+            execute "normal! \<C-w>="
+        " if there is no other tabs, this should only happen on the
+        " first resize
+        else
+            " edit the current buffer in a new tab
+            tabedit %
+            " split the new tab window vertically 
+            execute "normal! \<C-w>\<C-v>"
+        endif
+
+    " if the terminal/desktop window got smaller
+    elseif &columns <= g:minWinCol && g:pastColumns > g:minWinCol
+        " if there is more than one tab
+        if tabpagenr("$") != 1
+            let currentBuffer = bufnr('%')
+
+            " move to the previous (minscreen) tab
+            tabp
+            execute 'buffer ' . currentBuffer
+        else
+            " edit the current buffer in a new tab
+            tabedit %
+        endif
+    endif
+
+    let g:pastColumns = &columns
+endfunction
 

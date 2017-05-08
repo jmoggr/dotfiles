@@ -149,14 +149,38 @@ autocmd VimResized * :call ToggleFullscreen()
 " window) for that window to be classified as fullscreen
 let g:minWinCol = 120
 
+set switchbuf=useopen
+
 function ToggleFullscreen()
     " if the terminal/desktop window got bigger
     if &columns > g:minWinCol && g:pastColumns <= g:minWinCol
         " if there is more than one tab
         if tabpagenr("$") != 1
-            " move to the next (fullscreen) tab
-            tabn
+            let currentBuffer = bufnr('%')
+            let nextTabPage = tabpagenr() + 1
+
+            " check if the next tab page would wrap to the first tab page
+            if (nextTabPage > tabpagenr('$'))
+                let nextTabPage = 1
+            endif
+
+            " if the current buffer is visible in the next tab
+            if (index(tabpagebuflist(nextTabPage), currentBuffer) >= 0)
+                " move to the next tab and focus the window of the current
+                " buffer, this  preserves the previous fullscreen layout. Here sbuffer should always
+                " focus a window instead of splitting because switchbuf=useopen
+                " has been set and we have alreayd confirmed that the buffer is
+                " visilbe in a window.
+                tabn
+                execute 'sbuffer ' . currentBuffer
+            else
+                " move to the next tab and focus use the current buffer in
+                " whichever window was focussed last
+                tabn
+                execute 'buffer ' . currentBuffer
+            endif
             execute "normal! \<C-w>="
+            "
         " if there is no other tabs, this should only happen on the
         " first resize
         else

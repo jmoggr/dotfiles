@@ -138,7 +138,7 @@ augroup END
 set showtabline=0
 nnoremap <C-e> :call ToggleFullscreen()<CR>        
 
-let g:minWinCol = 120
+let g:minWinCol = 137
 
 function Inittoggle()
     let g:pastColumns = &columns

@@ -10,6 +10,9 @@ colorscheme base16-default-dark
 " disable .netrwhist file
 let g:netrw_dirhistmax = 0
 
+let g:syntastic_mode_map = { 'mode': 'passive' }
+"let b:syntastic_c_cflags = "-DVERSION=\"kl\" -I/usr/include/freetype2 -pedantic -Wall -x c -fsyntax-only -std=gnu99"
+
 syntax on
 filetype plugin indent on
 
@@ -46,6 +49,12 @@ set textwidth=80
 
 " show line numbers relative to the cursor in the left margin
 set relativenumber
+
+" show the current line number on the cursror line
+set number
+
+" highlight cursor line
+set cursorline
 
 " map ; to : in all modes to aviod having to press shift to enter commands
 map ; :

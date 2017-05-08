@@ -10,7 +10,8 @@ colorscheme base16-default-dark
 " disable .netrwhist file
 let g:netrw_dirhistmax = 0
 
-let b:syntastic_c_cflags = "-DVERSION=\"kl\" -I/usr/include/freetype2 -pedantic -Wall -x c -fsyntax-only -std=gnu99"
+let g:syntastic_mode_map = { 'mode': 'passive' }
+"let b:syntastic_c_cflags = "-DVERSION=\"kl\" -I/usr/include/freetype2 -pedantic -Wall -x c -fsyntax-only -std=gnu99"
 
 syntax on
 filetype plugin indent on

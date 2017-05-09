@@ -25,7 +25,7 @@ if [ "$(herbstclient layout | grep "FOCUS" | egrep -o "0x[0-9a-z]{6,}" | wc -l)"
 
     # move a window in the overfull frame to the hidden tag
     current_focus=$(herbstclient attr clients.focus.winid)
-    Hidden_Push_Back $current_focus $hidden_tag
+    Hidden_Push_Back $hidden_tag $current_focus
 
     $HOME/.config/herbstluftwm/hc-input-dirty.sh
     exit 0

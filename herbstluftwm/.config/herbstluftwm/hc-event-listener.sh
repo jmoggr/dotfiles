@@ -50,10 +50,6 @@ Firefox_Focused_Handler ()
         fi
 
        xdotool mousemove "$newX" "$newY"
-
-        #echo "borderX: $borderX; borderY: $borderY; width: $width; height: $height"
-        #echo "X: $X; newX: $newX"
-        #echo "Y: $Y; newY: $newY"
     }
 }
 
@@ -79,6 +75,7 @@ Window_Opened_Handler ()
             if herbstclient layout $current_tag | egrep "0x[0-9a-z]{6,}.*0x[0-9a-z]{6,}" | grep -q ${new_winID}; then
                 # set the new window to urgent to notify that there is a new
                 # window that is hidden
+                echo "pulse" > /tmp/hc-input-flag
                 herbstclient set_attr .clients."$new_winID".urgent true 
             fi
 
@@ -91,13 +88,16 @@ Window_Opened_Handler ()
 
     fi
 
-    $HOME/.config/herbstluftwm/hc-input-dirty.sh
 }
 
 Window_Closed_Handler () 
 {
     current_tag=$(herbstclient attr tags.focus.name)
     hidden_tag="h$current_tag"
+
+    # sometimes it takes a short period for the closed window to be removed from
+    # the layout
+    sleep 0.02
 
     # if there exists an empty frame in the current tag
     if herbstclient dump $current_tag | egrep -q "\(clients (grid|horizontal|vertical|max):(0|1)\)"; then
@@ -117,7 +117,7 @@ previous_line=""
 herbstclient -i | while read line; do
 
     if echo "$line" | grep -q 'Mozilla Firefox$'; then
-        Firefox_Focussed_Handler $line
+        Firefox_Focused_Handler "$line"
         continue
     fi
 

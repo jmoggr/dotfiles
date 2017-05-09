@@ -143,8 +143,8 @@ hc set smart_window_surroundings 0
 # If set don't draw frame borders if there is no ambiguity in focus. Disable to prevent inconsisten window borders
 hc set smart_frame_surroundings 0
 
-# if set only pagers and task bars can request focus change. No difference noticed
-hc set focus_stealing_prevention 0
+# if set only pagers and task bars can request focus change. Set so new windows appear in the focussed frame behind the current window (if one exists) the new window is then handled by hc-event-listener.sh 
+hc set focus_stealing_prevention 1
 
 # mouse focuses whichever window it hovers over
 hc set focus_follows_mouse 1

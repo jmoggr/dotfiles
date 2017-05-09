@@ -1,6 +1,8 @@
 #!/bin/sh
 
 xrdb .Xresources
+xrdb .Xresources.d/*
+
 xkbcomp $HOME/.config/keyboard/blackbird-keymap.xkb $DISPLAY
 
 # Default volume settings

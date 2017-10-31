@@ -2,6 +2,7 @@
 # disable signal generated from ctrl-q, the keybinding is recycled in vim
 stty -ixon
 
+
 export VISUAL="vim"
 export EDITOR="vim"
 alias ls='ls --color=auto --human-readable --group-directories-first'
@@ -76,7 +77,7 @@ function zle-line-init zle-keymap-select {
     # TODO: figure out why the rprompt is not displayed on the first prompt of
     # a new terminal
     VIM_PROMPT="%F{049}[NORMAL]%{$reset_color%}"
-    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
+    #RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
     zle reset-prompt
 }
 
@@ -90,7 +91,7 @@ zle -N zle-keymap-select
 
 # use 'df' to exit vi insert mode
 # http://superuser.com/questions/351499/how-to-switch-comfortably-to-vi-command-mode-on-the-zsh-command-line
-bindkey -M viins 'df' vi-cmd-mode
+#bindkey -M viins 'df' vi-cmd-mode
 
 
 
@@ -106,3 +107,5 @@ zle -N ctrlz
 bindkey '^Z' ctrlz
 
 #source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

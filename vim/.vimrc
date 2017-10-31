@@ -1,24 +1,62 @@
 execute pathogen#infect()
 
 " COLORS
+"
 
 let base16colorspace=256
 colorscheme base16-default-dark
+
+
 
 " OPTIONS
 
 " disable .netrwhist file
 let g:netrw_dirhistmax = 0
 
-let g:syntastic_mode_map = { 'mode': 'passive' }
+"let g:syntastic_mode_map = { 'mode': 'passive' }
 "let b:syntastic_c_cflags = "-DVERSION=\"kl\" -I/usr/include/freetype2 -pedantic -Wall -x c -fsyntax-only -std=gnu99"
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+let g:syntastic_python_checkers = ['mypy']
+let g:syntastic_python_mypy_args = '-s'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" GitGutter styling to use · instead of +/-
+let g:gitgutter_sign_added = '∙'
+let g:gitgutter_sign_modified = '∙'
+let g:gitgutter_sign_removed = '∙'
+let g:gitgutter_sign_modified_removed = '∙'
 
 syntax on
 filetype plugin indent on
 
 " The width of a TAB is set to 4.  Still it is a \t. It is just that Vim will
 " interpret it to be having a width of 4.
-set tabstop=4       
+set tabstop=4
+set list
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:· "
+
+set linebreak
+
+set encoding=utf-8
+set fileformats=unix,dos,mac
+
+"set showmatch 
+"set matchtime=2
+
+" overridden by statusline
+set ruler
+
+set smartcase
+set ignorecase
+
+" keep cursor this many lines away from top/bottom
+set scrolloff=15
 
 " Indents will have a width of 4
 set shiftwidth=4   
@@ -29,6 +67,11 @@ set softtabstop=4
 " Expand TABs to spaces
 set expandtab      
 
+set sidescrolloff=3
+
+"don't bother me when a fiel changes
+set autoread
+
 " Copy indent from current line when starting a new line 
 set autoindent
 
@@ -37,6 +80,9 @@ set smartindent
 
 " comments wrap at textwidth
 set formatoptions+=c
+
+" gq formats comments
+"set formatoptions+=q
 
 " non comments don't wrap
 set formatoptions-=t
@@ -47,11 +93,13 @@ set formatoptions-=o
 " width of line before wrapping occurs
 set textwidth=80
 
-" show line numbers relative to the cursor in the left margin
-set relativenumber
 
 " show the current line number on the cursror line
-set number
+"set number
+set nonumber
+"
+" show line numbers relative to the cursor in the left margin
+"set relativenumber
 
 " highlight cursor line
 set cursorline
@@ -101,6 +149,8 @@ vnoremap <C-S-Y> "+y
 nmap <C-J> :bn<CR>
 nmap <C-K> :bp<CR>
 
+
+
 "autocmd VimResized * exe "normal \<c-w>="
 
 " PLUGINS
@@ -125,20 +175,52 @@ let g:syntastic_check_on_wq = 0
 " AUTOCMDS
 augroup vimrc_autocmds
     autocmd!
-    autocmd BufEnter * highlight OverLength ctermbg=18
-    autocmd BufEnter * execute 'match OverLength /.\%>' . &textwidth . 'v.*/'
+    "autocmd BufEnter * highlight OverLength ctermbg=18
+    "autocmd BufEnter * execute 'match OverLength /.\%>' . &textwidth . 'v.*/'
 
-    autocmd VimEnter * highlight OverLength ctermbg=18
-    autocmd VimEnter * execute 'match OverLength /.\%>' . &textwidth . 'v.*/'
+    "autocmd VimEnter * highlight OverLength ctermbg=18
+    "autocmd VimEnter * execute 'match OverLength /.\%>' . &textwidth . 'v.*/'
 
     autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 expandtab
+
+    autocmd VimEnter * call AutoSaveWinView()
+
+    autocmd BufLeave * call AutoSaveWinView()
+    autocmd BufEnter * call AutoRestoreWinView()
+
+    autocmd CursorHold * call AutoSaveWinView()
 augroup END
 
 
+" Save current view settings on a per-window, per-buffer basis.
+function AutoSaveWinView()
+    if !exists("g:SavedBufView")
+        let g:SavedBufView = {}
+    endif
+
+    let g:SavedBufView[bufnr("%")] = winsaveview()
+
+    let buf = bufnr("%")
+    "echom "save " . bufnr("%") . "; line: " . g:SavedBufView[buf].lnum . "; top: " . g:SavedBufView[buf].topline 
+endfunction
+
+" Restore current view settings.
+function AutoRestoreWinView()
+    let buf = bufnr("%")
+    if exists("g:SavedBufView") && has_key(g:SavedBufView, buf)
+
+        "echom "restore " . bufnr("%") . "; line: " . g:SavedBufView[buf].lnum . "; top: " . g:SavedBufView[buf].topline 
+        call winrestview(g:SavedBufView[buf])
+    endif
+endfunction
+
+
+
+set updatetime=1000
 set showtabline=0
 nnoremap <C-e> :call ToggleFullscreen()<CR>        
 
-let g:minWinCol = 137
+let g:minWinCol = 142
 
 function Inittoggle()
     let g:pastColumns = &columns
@@ -152,7 +234,7 @@ function Inittoggle()
         " to the minscreen tab
         tabp
     endif
-endfunction
+endfunction                                                                                                                             
 
 autocmd VimEnter * :call Inittoggle()
 autocmd VimResized * :call ToggleFullscreen()
@@ -162,10 +244,31 @@ autocmd VimResized * :call ToggleFullscreen()
 
 set switchbuf=useopen
 
+function HelloWorld()
+    echom "hello"
+endfunction
+
 function ToggleFullscreen()
+    let currentBuffer = bufnr('%')
+    let win = winsaveview()
+
+
+
+    "echom "toggling " . bufnr("%") . "; line: " . win.lnum . "; top: " . win.topline 
+
+    " when the desktop window is resized by the window manager, the window is reflowed
+    " before the vim resize event is fired. this means that a vim window that
+    " has been squashed now has lnum == topline. There appears no way to save
+    " the window state before this occurs, see the workaround at the end of the
+    " function. If the vim window is not resized then we save it so that our
+    " position can be restored after we change tabs
+
+    if win.lnum != win.topline
+        call AutoSaveWinView()
+    endif
+
     " if the terminal/desktop window got bigger
     if &columns > g:minWinCol && g:pastColumns <= g:minWinCol
-        let currentBuffer = bufnr('%')
         let nextTabPage = tabpagenr() + 1
 
         " check if the next tab page would wrap to the first tab page
@@ -199,6 +302,14 @@ function ToggleFullscreen()
         tabp
         execute 'buffer ' . currentBuffer
     endif
+
+    call AutoRestoreWinView()
+
+"    if win.lnum == win.topline
+"        execute win.lnum . '|' 
+"        execute 'normal! zz'
+"        let g:SavedBufView[bufnr("%")] = winsaveview()
+"    endif
 
     let g:pastColumns = &columns
 endfunction

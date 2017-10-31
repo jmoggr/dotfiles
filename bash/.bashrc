@@ -16,3 +16,5 @@ source /opt/context/tex/setuptex > /dev/null 2>&1
 # see also 'dircolors'
 # echo "\e[...mTest String\e[0m"
 LS_COLORS=$LS_COLORS:'ex=1;38;5;40:di=1;38;5;05:ln=1;38;5;226:ow=1;38;5;196:' ; export LS_COLORS
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

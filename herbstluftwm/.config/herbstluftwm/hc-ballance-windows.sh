@@ -19,7 +19,6 @@ for extra_winid in `herbstclient layout $current_tag | egrep "0x[0-9a-z]{6,} .*?
 done
 
 if [[ "$window_moved" == "true" ]]; then
-    echo "ballancing windows change" >> ~/hce.out
     herbstclient load $hidden_tag "$hidden_layout"
 fi
 

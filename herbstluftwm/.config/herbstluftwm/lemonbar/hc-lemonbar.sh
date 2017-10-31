@@ -124,7 +124,8 @@ temperature()
 }
 
 memused() {
-    read total available <<< `grep -E 'Mem(Total|Available)' /proc/meminfo | awk '{print $2}'`
+    total=$(grep MemTotal /proc/meminfo | grep -Eo "[0-9]+")
+    available=$(grep MemAvailable /proc/meminfo | grep -Eo "[0-9]+")
 
     # TODO what if zfs isn't being used, or the file cannot be read?
     arc_size=$(awk '/^size/ { print $3 }' < /proc/spl/kstat/zfs/arcstats)
@@ -236,7 +237,7 @@ fade_in()
 
 print_lemonbar_string() 
 {
-echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)  $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
+    echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)  $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
 }
 
 var=250
@@ -244,54 +245,13 @@ watch_file="/tmp/hc-input-flag"
 
 touch $watch_file
 
-$(sleep 0.1 && touch $watch_file) &
+$(sleep 0.5 && touch $watch_file) &
 
 # This loop will fill a buffer with our infos, and output it to stdout.
 while :; do
     inotifywait --timeout 5 --event open /tmp/hc-input-flag > /dev/null
 
-    content=$(cat $watch_file)
-
-    if [ "$content" == "pulse" ]; then
-        memused=$(memused)
-        temperature=$(temperature)
-        fade_in=$(fade_in)
-        fade_out=$(fade_out)
-        battery=$(battery)
-        cpuload=$(cpuload)
-        volume=$(volume)
-        calendar_date=$(calendar_date)
-        time_of_day=$(time_of_day)
-
-        for length in `seq 0  15 120 && seq 120 -15 0`; do  
-            length_hex=$(printf "%x" $length)
-
-            
-
-            fade=$(
-                seq 0 4 $length | xargs printf "%%{B#%xa0131a} "
-
-                for ((i = 0 ; i < $length   ; i+=5)) do
-                    printf "%%{B#${length_hex}a0131a} "
-                done
-
-                seq $length -4 0  | xargs printf "%%{B#%xa0131a} "
-            )
-
-
-            #fade=$( seq 1 100 | xargs -Iz printf "%%{B#${length_hex}00FF00} ")
-            #(>&2 echo "$fade")
-
-
-        echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $fade_out  %{c} $fade %{r}$fade_in  $battery    $memused    $temperature   $cpuload    $volume    %{B$active_color}   $calendar_date   $time_of_day %{B#00000000}"
-
-        truncate -s 0 $watch_file
-        #sleep 0.2
-    done 
-
-
-
-    fi
+    truncate -s 0 $watch_file
 
     print_lemonbar_string
 

@@ -1,10 +1,5 @@
 # application   |   with_path   |   select_dir  |   show_hidden |   base_path   |   launch_command
+nemo            |               |               |               |               |  
 zathura         |   true        |               |               |   ~/downloads |   
 libreoffice     |   true        |               |               |               |   
-transmission-qt |               |               |               |               |   
-chromium        |               |               |               |               |   
-firefox         |               |               |               |               |   
-krusader        |   true        |   true        |               |               |  
 minecraft       |               |               |               |               |   /arsenal/games/minecraft/start.sh
-urbanterror     |               |               |               |               |   /arsenal/games/urbanterror/start.sh
-ts3-client      |               |               |               |               |   ~/programs/teamspeak3-client/start.sh

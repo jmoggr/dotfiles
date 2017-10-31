@@ -14,14 +14,17 @@ xset -b
 
 case "$(hostname)" in
     "warrig")
+
+#        xrandr --output DP-1 --mode 2560x1440
+#       xrandr --output PD-1 --primary
+#        xrandr --output LVDS-1 --off
         urxvtd --quiet --opendisplay -f
         compton -b
 
         feh --bg-center $HOME/.backgrounds/blue-blocks-cavern.jpg
             
         # start window manager
-        exec herbstluftwm >> ~/herbst.out
-        #exec startxfce4 
+        exec herbstluftwm 
     ;;
     "thenux")
         # setup screen

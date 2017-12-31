@@ -50,7 +50,7 @@ fi
 setopt PROMPT_SUBST
 
 # use vi keybindings and modes in the line editor
-bindkey -v
+#bindkey -v
 
 # When changing to cmd mode for vi editing we want to update the prompt to show
 # that we are in cmd mode. However redrawing the prompt only redraws one line,
@@ -76,14 +76,14 @@ PROMPT=$'%F{016}└─%f$ '
 function zle-line-init zle-keymap-select {
     # TODO: figure out why the rprompt is not displayed on the first prompt of
     # a new terminal
-    VIM_PROMPT="%F{049}[NORMAL]%{$reset_color%}"
+    #VIM_PROMPT="%F{049}[NORMAL]%{$reset_color%}"
     #RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
-    zle reset-prompt
+    #zle reset-prompt
 }
 
 # event hooks to change vi mode indicator
-zle -N zle-line-init
-zle -N zle-keymap-select
+#zle -N zle-line-init
+#zle -N zle-keymap-select
 
 # Removes delay when escaping viins with the esc key, but breaks multikey
 # escape sequences

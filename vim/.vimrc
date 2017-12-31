@@ -171,6 +171,9 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+" https://stackoverflow.com/a/21434697
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <C-w>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 
 " AUTOCMDS
 augroup vimrc_autocmds
@@ -234,7 +237,7 @@ function Inittoggle()
         " to the minscreen tab
         tabp
     endif
-endfunction                                                                                                                             
+endfunction
 
 autocmd VimEnter * :call Inittoggle()
 autocmd VimResized * :call ToggleFullscreen()
@@ -251,10 +254,6 @@ endfunction
 function ToggleFullscreen()
     let currentBuffer = bufnr('%')
     let win = winsaveview()
-
-
-
-    "echom "toggling " . bufnr("%") . "; line: " . win.lnum . "; top: " . win.topline 
 
     " when the desktop window is resized by the window manager, the window is reflowed
     " before the vim resize event is fired. this means that a vim window that
@@ -304,12 +303,6 @@ function ToggleFullscreen()
     endif
 
     call AutoRestoreWinView()
-
-"    if win.lnum == win.topline
-"        execute win.lnum . '|' 
-"        execute 'normal! zz'
-"        let g:SavedBufView[bufnr("%")] = winsaveview()
-"    endif
 
     let g:pastColumns = &columns
 endfunction

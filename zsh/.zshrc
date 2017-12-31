@@ -44,7 +44,7 @@ bindkey '^p' history-incremental-search-forward
 
 # base16 scripts don't support linux console (tty)
 if [ "${TERM%%-*}" != 'linux' ]; then
-    eval "$(cat ./.config/base16-shell/scripts/base16-default-dark.sh)"
+    source ~/.config/base16-default-dark.sh
 fi
 
 setopt PROMPT_SUBST

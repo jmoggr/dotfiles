@@ -58,16 +58,37 @@ setopt PROMPT_SUBST
 # line is static, we can print that prompt line statically and only update the
 # second line dynamically.
 
+# https://unix.stackexchange.com/a/9607
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    machine_name=$'%F{001}%m%f'
+else
+    machine_name=$'%F{004}%m%f'
+fi
+
+if [ "$EUID" -ne 0 ]; then
+    user_name='%F{002}%n%f'
+else
+    user_name='%F{001}%n%f'
+fi
+
+prompt_top='%F{016}┌─%f'$user_name'@'$machine_name':%~'
+
 # Print the first line of prompt before the actual prompt is displayed. This
 # line is static
-#http://superuser.com/questions/974908/multiline-rprompt-in-zsh
+# http://superuser.com/questions/974908/multiline-rprompt-in-zsh
 precmd() {
-    # TODO: find out what print -P does
-    print -P $'%F{016}┌─%f%(!.%F{001}%n%f.%F{002}%n%f)@%F{004}%m%f:%{$fg_bold[white]%}%~%{$reset_color%}'
+    # use the zsh print builtin, -P prints to the input of the coprocess,
+    # allowing exapnsion of prompt string
+    print -P $prompt_top
 }
 
 # Set the second line of prompt, this is the actual prompt
-PROMPT=$'%F{016}└─%f$ '
+if [ "$EUID" -ne 0 ]; then
+    PROMPT='%F{016}└─%f$ '
+else
+    PROMPT='%F{016}└─%f# '
+fi
+
 
 # use vi keybindings and enable vi modes
 

@@ -60,7 +60,7 @@ setopt PROMPT_SUBST
 
 # https://unix.stackexchange.com/a/9607
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    machine_name=$'%F{001}%m%f'
+    machine_name=$'%F{009}%m%f'
 else
     machine_name=$'%F{004}%m%f'
 fi
@@ -68,7 +68,7 @@ fi
 if [ "$EUID" -ne 0 ]; then
     user_name='%F{002}%n%f'
 else
-    user_name='%F{001}%n%f'
+    user_name='%F{009}%n%f'
 fi
 
 prompt_top='%F{016}┌─%f'$user_name'@'$machine_name':%~'

@@ -31,6 +31,7 @@ command_prefix="herbstclient spawn"
 # config variables
 select_dir=""
 hidden_files=""
+file_extensions=""
 base_path=""
 launch_command=""
 app_name=""
@@ -129,13 +130,21 @@ function update_dmenu
         if [[ "$select_dir" = "true" ]]; then
             { echo "."; echo ".."; ls -d1a "$target"/*/; } | xargs basename -a >&3
         else
-            { echo ".."; ls -1a "$target"; } >&3
+            if [[ ! -z "$file_extensions" ]]; then
+                { echo ".."; ls -1a "$target" | grep -E "\.($file_extensions)$"; } >&3
+            else
+                { echo ".."; ls -1a "$target"; } >&3
+            fi
         fi
     else
         if [[ "$select_dir" = "true" ]]; then
             { echo "."; echo ".."; ls -d1 "$target"/*/; } | xargs basename -a >&3
         else
-            { echo ".."; ls -1 "$target"; } >&3
+            if [[ ! -z "$file_extensions" ]]; then
+                { echo ".."; ls -1d "$target"/*/ | grep -oE "[^\/]+\/$"; ls -1 "$target" | grep -E "\.($file_extensions)$"; } >&3
+            else
+                { echo ".."; ls -1 "$target"; } >&3
+            fi
         fi
     fi
 
@@ -152,7 +161,7 @@ while read line; do
         app_line=$(cat "$config_file" | grep "^${line}" | sed -r 's/\s*\'$config_delim'\s*/\'$config_delim'/g')
 
         # read configuration options for application
-        IFS="$config_delim" read app_name with_path select_dir hidden_files base_path launch_command <<< $(echo $app_line)
+        IFS="$config_delim" read app_name with_path select_dir hidden_files base_path file_extensions launch_command <<< $(echo $app_line)
 
         # if a base path has not been specified use the users home
         if [[ -z "${base_path// }" ]]; then
@@ -162,6 +171,10 @@ while read line; do
         # if a launch command has not been specified use the app name
         if [[ -z "${launch_command// }" ]]; then
             launch_command="$app_name"
+        fi
+
+        if [[ ! -z "$file_extensions" ]]; then
+            file_extensions="${file_extensions// /|}"
         fi
 
         # expand ~ to home directory

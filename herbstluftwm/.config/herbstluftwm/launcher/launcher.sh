@@ -187,12 +187,14 @@ while read line; do
             # epand ~ to home directory
             target="${base_path/#\~/$HOME}"
 
-            # update dmenu and skip the last remainder of the REPL, this first block will be skipped on further iterations.
+            # update dmenu and skip the last remainder of the REPL, this first
+            # conditional block will be skipped on further iterations.
             update_dmenu
             continue
         else
             # if no file/directory is requested for appliation start, exit dmenu and start the application, and exit script
             echo "STOP" >&3
+            eval $command_prefix $launch_command
             break
         fi
     fi

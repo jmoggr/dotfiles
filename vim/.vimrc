@@ -4,8 +4,13 @@ execute pathogen#infect()
 "
 
 let base16colorspace=256
+"colorscheme base16-default-dark
 colorscheme base16-default-dark
 
+"http://vim.wikia.com/wiki/Identify_the_syntax_highlighting_group_used_at_the_cursor
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 
 " OPTIONS
@@ -134,27 +139,21 @@ inoremap <C-P> <ESC>"*pi
 nnoremap <C-P> "*p
 vnoremap <C-P> "*p
 
-" pasting from secondary clipboar
-inoremap <C-S-P> <ESC>"+pi
-nnoremap <C-S-P> "+p
-vnoremap <C-S-P> "+p
+inoremap <C-S-P> <ESC>"*pi
+nnoremap <C-S-P> "*p
+vnoremap <C-S-P> "*p
 
 "yanking to primary clipboar
-vnoremap <C-Y> "*y 
+vnoremap <C-Y> "*y
 
-" yanking to secondary clipboar
-vnoremap <C-S-Y> "+y 
+vnoremap <C-S-Y> "*y
 
 " buffer movement
 nmap <C-J> :bn<CR>
 nmap <C-K> :bp<CR>
 
 
-
-"autocmd VimResized * exe "normal \<c-w>="
-
 " PLUGINS
-
 
 " see ~/.vim/plugins/bclose.vim
 " normally the terminal would catch a signal from CTRL-q, this can be disabled
@@ -190,6 +189,9 @@ augroup vimrc_autocmds
 
     autocmd BufLeave * call AutoSaveWinView()
     autocmd BufEnter * call AutoRestoreWinView()
+
+    "http://vim.wikia.com/wiki/Automatically_set_screen_title
+    autocmd BufEnter * let &titlestring = hostname() . '@' . $USER . ':' . $PWD . ' -- ' . "vim (" . expand("%:t") . ")"
 
     autocmd CursorHold * call AutoSaveWinView()
 augroup END

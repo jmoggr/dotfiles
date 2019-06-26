@@ -24,3 +24,7 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+
+export PATH="$HOME/.cargo/bin:/usr/local/cuda/bin:$HOME/.local/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+export C_INCLUDE_PATH="/usr/local/cuda/include:$C_INCLUDE_PATH"

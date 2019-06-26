@@ -1,3 +1,7 @@
 [user]
 	email = jasonmoggridge@gmail.com
 	name = Jason Moggridge
+[color]
+	ui = auto
+[cola]
+	spellcheck = false

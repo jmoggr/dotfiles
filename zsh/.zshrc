@@ -2,7 +2,8 @@
 # disable signal generated from ctrl-q, the keybinding is recycled in vim
 stty -ixon
 
-typeset -U path
+#remove duplicate values from PATH for all path interfaces
+typeset -U PATH path
 
 export VISUAL="vim"
 export EDITOR="vim"

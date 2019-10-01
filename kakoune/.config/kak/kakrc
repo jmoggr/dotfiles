@@ -1,0 +1,184 @@
+
+# relative line numbers
+add-highlighter global/ number-lines -relative -hlcursor
+add-highlighter global/ wrap -indent -marker '↳'
+
+hook global InsertChar f %{ try %{
+  exec -draft hH <a-k>df<ret> d
+  execute-keys -with-hooks '<esc>'
+}}
+
+hook global NormalKey y|d|c %{ nop %sh{
+  printf %s "$kak_main_reg_dquote" | xsel --input --primary
+}}
+
+colorscheme     base16-dark
+
+# map global normal %{;} %{:}
+# map global normal %{:} %{;}
+map global normal %{x} %{X}
+map global normal %{X} %{x}
+
+map global normal <pagedown> '10j'
+map global normal <pageup> '10k'
+
+# https://github.com/mawww/kakoune/issues/1327
+hook global InsertCompletionShow .* %{
+    try %{
+        # this command temporarily removes cursors preceded by whitespace;
+        # if there are no cursors left, it raises an error, does not
+        # continue to execute the mapping commands, and the error is eaten
+        # by the `try` command so no warning appears.
+        execute-keys -draft 'h<a-K>\s<ret>'
+        map window insert <tab> <c-n>
+        echo -debug "completion set"
+        map window insert <c-k> <c-p>
+    }
+}
+   
+hook global InsertCompletionHide .* %{
+    echo -debug "completion stop"
+    unmap window insert <tab> <c-n>
+    unmap window insert <c-k> <c-p>
+}
+
+map global normal <space> , -docstring 'leader'
+map global normal <backspace> <space> -docstring 'remove all sels except main'
+map global user ';' '<a-;>'
+map global user <backspace> <a-space>
+map global user @ '<a-@>'
+map global user <space> %{:}
+map global user f '<a-f>'
+map global user t '<a-t>'
+map global user . '<a-.>'
+map global user K '<a-K>'
+map global user w '<a-w>'
+map global user b '<a-b>'
+map global user e '<a-e>'
+map global user J '<a-J>'
+map global user o '<a-o>'
+map global user O '<a-O>'
+map global user x '<a-x>' -docstring 'expand selections to contain full lines'
+map global user i '<a-i>' -docstring 'select inner object'
+map global user a '<a-a>' -docstring 'select whole object'
+map global user v '<a-a>im<a-x>'
+map global user r 'r' -docstring 'replace selections with yanked text'
+map global user m '<a-m>'
+
+map global user Z '<a-Z>'
+map global user z '<a-z>'
+map global user _ '<a-_>'
+map global user r 'r'
+
+map global user p 'lZh<a-!>xsel --output --primary<ret>l<a-Z>iz<a-;>Hdh<a-p><backspace>'
+map global user P 'lZh<a-!>xsel --output --clipboard<ret>l<a-Z>iz<a-;>Hdh<a-P><backspace>'
+
+map global normal r 'R' -docstring 'replace selections with yanked text'
+map global normal p '<a-p>' -docstring 'paste all after the end of each selection, and select each pasted string'
+map global normal P '<a-P>' -docstring 'paste all before the end of each selection, and select each pasted string'
+
+## comment lines
+map global user 'c' :comment-line<ret> -docstring 'toggle comment lines' 
+
+map global user <c-q> ":q!<ret>"
+# write all, delete buffer and quit
+map global normal <c-q> "wa:db;q<ret>"
+
+# indentation
+set-option global tabstop     4
+set-option global indentwidth 4
+
+# keep space around cursor
+set-option global scrolloff 6,6
+
+# save on pressing enter
+map global normal <ret> ": w<ret>"
+
+define-command yank-to-clipboard %{ nop %sh{
+  printf %s "$kak_selections" | xsel --input --clipboard
+} }
+map global normal Y ': yank-to-clipboard<ret>'
+
+define-command test %{
+    try %{
+    echo -debug 'starting test'
+    execute-keys -draft 'h<a-K>\h<ret>'
+    echo -debug 'test worked'
+} catch %{
+    echo -debug 'test failed'
+} }
+
+define-command rofi-buffers \
+-docstring 'Select an open buffer using Rofi' %{ evaluate-commands %sh{
+    BUFFER=$(printf "%s\n" "${kak_buflist}" | tr " " "\n" | rofi -dmenu | tr -d \')
+    if [ -n "$BUFFER" ]; then
+        printf "%s\n" "buffer ${BUFFER}"
+    fi
+} }
+map global user <tab> ': rofi-buffers<ret>'
+
+eval %sh{kak-lsp --kakoune -s $kak_session}
+hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
+    lsp-enable-window
+}
+
+source "%val{config}/plugins/plug.kak/rc/plug.kak"
+plug "andreyorst/plug.kak" noload
+
+plug "Delapouite/kakoune-buffers"
+
+map global normal ^ q
+map global normal <a-^> Q
+
+map global normal q b
+map global normal Q B
+map global normal <a-q> <a-b>
+map global normal <a-Q> <a-B>
+
+map global normal b ':enter-buffers-mode<ret>'              -docstring 'buffers…'
+map global normal B ':enter-user-mode -lock buffers<ret>'   -docstring 'buffers (lock)…'
+
+
+plug "andreyorst/smarttab.kak" %{
+    set-option global softtabstop 4
+    hook global WinSetOption filetype=(rust|markdown|kak|lisp|scheme|sh|perl) expandtab
+    hook global WinSetOption filetype=(makefile|gas) noexpandtab
+    hook global WinSetOption filetype=(c|cpp) smarttab
+}
+
+plug "ul/kak-lsp" do %{
+    cargo build --release --locked
+    ln -sf target/release/kak-lsp ~/.local/bin/
+    # cargo install --force --path . # `--path .' is needed by recent versions of cargo
+} config %{
+    set-option global lsp_diagnostic_line_error_sign '║'
+    set-option global lsp_diagnostic_line_warning_sign '┊'
+
+    define-command ne -docstring 'go to next error/warning from lsp' %{ lsp-find-error --include-warnings }
+    define-command pe -docstring 'go to previous error/warning from lsp' %{ lsp-find-error --previous --include-warnings }
+    define-command ee -docstring 'go to current error/warning from lsp' %{ lsp-find-error --include-warnings; lsp-find-error --previous --include-warnings }
+
+    define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
+
+    hook global WinSetOption filetype=(c|cpp|rust) %{
+        set-option window lsp_auto_highlight_references true
+        set-option window lsp_hover_anchor false
+        lsp-auto-hover-enable
+        lsp-enable-window
+    }
+
+    hook global WinSetOption filetype=(rust) %{
+        set-option window lsp_server_configuration rust.clippy_preference="on"
+    }
+
+    hook global WinSetOption filetype=rust %{
+        hook window BufWritePre .* %{
+            evaluate-commands %sh{
+                test -f rustfmt.toml && printf lsp-formatting-sync
+            }
+        }
+    }
+
+    hook global KakEnd .* lsp-exit
+}
+

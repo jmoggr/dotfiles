@@ -24,3 +24,7 @@ fi
 export PATH="$HOME/.cargo/bin:/usr/local/cuda/bin:$HOME/.local/bin:$HOME/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
 export C_INCLUDE_PATH="/usr/local/cuda/include:$C_INCLUDE_PATH"
+
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh

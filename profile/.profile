@@ -8,10 +8,6 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# fixes issue when using unprivileged LXC in a subshell
-# https://gist.github.com/julianlam/4e2bd91d8dedee21ca6f
-unset XDG_RUNTIME_DIR
-
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists

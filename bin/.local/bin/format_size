@@ -1,0 +1,19 @@
+#!/bin/bash
+
+function format_size {
+    size_in_kb=$1
+
+    if [ "${#size_in_kb}" -le 3 ]; then
+        echo "${size_in_kb}K"
+        exit 0
+    elif [ "${#size_in_kb}" -le 6 ]; then
+        printf "%.1fM\n" $(echo "$size_in_kb / 1000" | bc -l)
+        exit 0
+    elif [ "${#size_in_kb}" -le 9 ]; then
+        printf "%.1fG\n" $(echo "$size_in_kb / 1000 / 1000" | bc -l)
+    else
+        printf "%.1fT\n" $(echo "$size_in_kb / 1000 / 1000 / 1000" | bc -l)
+    fi
+}
+
+format_size "$1"

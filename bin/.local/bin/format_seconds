@@ -1,0 +1,18 @@
+#!/bin/zsh
+# bash doesn't handle decimal places nicely, truncating would probably be
+# sufficient for bash compatability
+
+function format_seconds {
+  local T=$1
+  local D=$((T/60/60/24))
+  local H=$((T/60/60%24))
+  local M=$((T/60%60))
+  local S=$((T%60))
+
+  (( $D >= 1 )) && printf '%dd:' $D
+  (( $D >= 1 || $H >= 1)) && printf '%dh:' $H
+  (( $D >= 1 || $H >= 1 || $M >= 1 )) && printf '%dm:' $M
+  printf '%ds\n' $S
+}
+
+format_seconds "$1"

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for m in *; do
+    ffprobe -i "$m" -show_entries format=duration -v quiet -of csv="p=0"
+done | paste -sd+ | bc | cut -d'.' -f1 | xargs format_seconds

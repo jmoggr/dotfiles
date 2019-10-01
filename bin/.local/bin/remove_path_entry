@@ -1,0 +1,13 @@
+#!/bin/bash
+
+path_item=$(echo $PATH | tr ':' $'\n' | dmenu -l 20 -x 646 -y 74 -w 1268)
+
+if [ -z "$path_item" ]; then
+    echo "No PATH entry selected for removal, exiting"
+    exit 0
+fi
+
+echo "Removing \'$path_item\' from PATH"
+
+new_path=$(echo $PATH | tr ':' $'\n' | grep -v "$path_item" | paste -sd ':' -)
+export PATH="$new_path"

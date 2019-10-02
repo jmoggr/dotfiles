@@ -1,5 +1,7 @@
 #! perl -w
 
+# https://bbs.archlinux.org/viewtopic.php?id=80226
+
 # Usage:
 # URxvt.perl-ext-common: clipboard
 # URxvt.keysym.Mod4-c: perl:clipboard:copy

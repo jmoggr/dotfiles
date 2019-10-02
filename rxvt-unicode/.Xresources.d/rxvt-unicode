@@ -17,7 +17,7 @@ URxvt.secondaryScroll: 0
 ! 
 URxvt.secondaryWheel: 1
 
-!https://bbs.archlinux.org/viewtopic.php?id=80226
+!see ~/.urxvt/ext/clipboard
 URxvt.perl-ext-common: clipboard
 URxvt.keysym.C-y: perl:clipboard:copy
 URxvt.keysym.C-p: perl:clipboard:paste

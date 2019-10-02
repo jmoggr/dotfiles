@@ -34,6 +34,7 @@ hc keybind $Mod-r       spawn /home/jason/.config/herbstluftwm/hc-remove-frame.s
 hc keybind $Mod-s       spawn /home/jason/.config/herbstluftwm/hc-add-frame.sh
 hc keybind $Mod-n       spawn /home/jason/.config/herbstluftwm/hc-cycle-hidden.sh
 hc keybind $Mod-u       spawn /home/jason/.config/herbstluftwm/hc-hidden-menu.sh
+hc keybind $Mod-d       spawn /home/jason/.config/herbstluftwm/hc-clipboard.sh promote
 
 # basic movement
 # focusing clients

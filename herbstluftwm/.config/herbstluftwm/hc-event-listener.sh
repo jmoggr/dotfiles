@@ -1,9 +1,11 @@
 #!/bin/bash
-
+set -e
+set -x
 source ~/.config/herbstluftwm/hc-lib.sh
 
 herbstclient unrule --all
 herbstclient rule class~.* --hook=any_window
+herbstclient rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' --manage=off
 
 function Check_fullscreen
 {
@@ -29,7 +31,11 @@ function Check_fullscreen
 
 Firefox_Focused_Handler ()
 {
-    echo "$1" | cut -f 2 | xargs xwininfo -id | grep -e "Absolute upper-left [XY]:" -e "Width" -e "Height" | grep -oE "[0-9]+" | tr '\n' ' ' | { read borderX borderY width height 
+    s=$(echo "$1" | cut -f 2 | xargs xwininfo -id | grep -e "Absolute upper-left [XY]:" -e "Width" -e "Height" | grep -oE "[0-9]+" | tr '\n' ' ')
+
+    echo "echo printing s: $s"
+
+    echo "$s" | { read borderX borderY width height
     
         eval $(xdotool getmouselocation --shell)
 
@@ -92,24 +98,56 @@ Window_Opened_Handler ()
 
 Window_Closed_Handler () 
 {
-    current_tag=$(herbstclient attr tags.focus.name)
-    hidden_tag="h$current_tag"
-
-    # sometimes it takes a short period for the closed window to be removed from
-    # the layout
-    sleep 0.02
-
-    # if there exists an empty frame in the current tag
-    if herbstclient dump $current_tag | egrep -q "\(clients (grid|horizontal|vertical|max):(0|1)\)"; then
-        # get a window from the bottom of the queue in the hidden tag
-
+    echo "close start"
+    if [[ -z "$1" ]]; then
         $HOME/.config/herbstluftwm/hc-ballance-windows.sh
         $HOME/.config/herbstluftwm/hc-ballance-frames.sh
 
         $HOME/.config/herbstluftwm/hc-input-dirty.sh
+        return
     fi
-    # else: there are no empty frames after a window closed, nothing to
-    # do. 
+
+    closed_winid="$1"
+    current_tag=$(herbstclient attr tags.focus.name)
+    hidden_tag="h$current_tag"
+
+    tag=$(herbstclient attr clients."$closed_winid".tag 2> /dev/null) && rc=$? || rc=$?
+    if [[ "$rc" -ne 0 ]]; then
+        # a window just closed but we know nothing about it, ballance
+        # everything in the current tag and hope for the best
+        $HOME/.config/herbstluftwm/hc-ballance-windows.sh
+        $HOME/.config/herbstluftwm/hc-ballance-frames.sh
+
+        $HOME/.config/herbstluftwm/hc-input-dirty.sh
+    else
+        # sometimes it takes a short period for the closed window to be removed from
+        # the layout
+        while true; do
+            herbstclient attr clients | egrep -q "$closed_winid" > /dev/null 2>&1
+
+            if [[ "$?" -ne 0 ]]; then
+                break
+            else
+                sleep 0.02
+            fi
+        done
+
+        if [[ "$current_tag" -ne "$tag" ]]; then
+            echo "Error"
+        else
+            # if there exists an empty frame in the current tag
+            if herbstclient dump $current_tag | egrep -q "\(clients (grid|horizontal|vertical|max):(0|1)\)"; then
+                # get a window from the bottom of the queue in the hidden tag
+
+                $HOME/.config/herbstluftwm/hc-ballance-windows.sh
+                $HOME/.config/herbstluftwm/hc-ballance-frames.sh
+
+                $HOME/.config/herbstluftwm/hc-input-dirty.sh
+
+            fi
+        fi
+    fi
+    echo "close stop"
 }
 
 previous_line=""
@@ -130,10 +168,12 @@ herbstclient -i | while read line; do
     
     if echo $line | grep -q window_closed; then
         event_type="window_closed"
+        new_winID=$(echo $line | stdbuf -oL cut -f2 -d' ' )
     elif echo $line | grep -q any_window; then
         event_type="window_opened"
         new_winID=$(echo $line | stdbuf -oL cut -f3 -d' ' )
 
+    # incorrect, windows opened by other programs, emit 'window_unmanaged' when closed by their parent program
     # dialog windows emit a window_unmanaged hook but do not emit a window_close hook, and regular windows emit both a window_close and a window_unmanaged hook. We want to detect close events for all windows closes but only perform one action per closed window. We do this by checking if the line before a window_unmanaged hook is a window_closed hook, since window_closed hooks alwasy come first if there is a window_unmanaged hook without a previous window_closed hook then we know it is a dialog window that is closing and should create an event for it. Otherwise it's a normal window closing that produced 2 events
     elif echo $line | grep -q window_unmanaged; then
         if echo $previous_line | grep -q -v window_closed; then
@@ -143,14 +183,13 @@ herbstclient -i | while read line; do
 
     previous_line=$line
 
-
     case $event_type in
 
         "window_opened")
             Window_Opened_Handler $new_winID
             ;;
         "window_closed")
-            Window_Closed_Handler
+            Window_Closed_Handler $new_winID
             ;;
     esac
 

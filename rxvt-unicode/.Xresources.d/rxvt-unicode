@@ -19,6 +19,8 @@ URxvt.secondaryWheel: 1
 
 !see ~/.urxvt/ext/clipboard
 URxvt.perl-ext-common: clipboard
+URxvt*perl-ext: unichr,matcher
+
 URxvt.keysym.C-y: perl:clipboard:copy
 URxvt.keysym.C-p: perl:clipboard:paste
 

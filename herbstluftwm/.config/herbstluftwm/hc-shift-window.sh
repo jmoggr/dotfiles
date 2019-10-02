@@ -25,7 +25,7 @@ focus_winID=$(herbstclient attr clients.focus.winid)
 if [ "$?" != "0" ]; then
     focus_winID=0
 fi
-    
+
 herbstclient lock
 
 herbstclient focus $direction

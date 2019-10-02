@@ -161,13 +161,13 @@ hc set focus_follows_mouse 1
 hc unrule -F
 
 # turn on pseudotiling for splash windows. Splash windows often look bad when forced to scale to their frame.
-hc rule windowtype='_NET_WM_WINDOW_TYPE_SPLASH' --pseudotile=on
+# hc rule windowtype='_NET_WM_WINDOW_TYPE_SPLASH' --pseudotile=on
 
 # give focus to new dialogs
 hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' --focus=on
 
 # don't manage desktop utility windows. Leaving those windows managed doesn't seem to have any effect on WM behaviour for some reason.
-hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' --manage=off
+# hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' --manage=off
 
 # pad top of the monitor so there is a gap between the status bar and the WM content
 hc pad 0 24

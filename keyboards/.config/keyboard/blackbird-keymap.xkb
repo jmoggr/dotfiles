@@ -1327,7 +1327,7 @@ xkb_symbols "pc+us+inet(evdev)" {
     key <AB08> {         [           comma,            less ] };
     key <AB09> {         [          period,         greater ] };
     key <AB10> {         [           slash,        question ] };
-    key <RTSH> {         [         Shift_R ] };
+    key <RTSH> {         [         Tab ] };
     key <KPMU> {
         type= "CTRL+ALT",
         symbols[Group1]= [     KP_Multiply,     KP_Multiply,     KP_Multiply,     KP_Multiply,   XF86ClearGrab ]
@@ -1453,7 +1453,7 @@ xkb_symbols "pc+us+inet(evdev)" {
     key <I129> {         [      KP_Decimal,      KP_Decimal ] };
     key <HNGL> {         [          Hangul ] };
     key <HJCV> {         [    Hangul_Hanja ] };
-    key <LWIN> {         [         Super_L ] };
+    key <LWIN> {         [        ISO_Level3_Shift ] };
     key <RWIN> {         [         Super_R ] };
     key <COMP> {         [            Menu ] };
     key <STOP> {         [          Cancel ] };
@@ -1555,14 +1555,14 @@ xkb_symbols "pc+us+inet(evdev)" {
     key <I245> {         [   XF86Bluetooth ] };
     key <I246> {         [        XF86WLAN ] };
     modifier_map Control { <LCTL> };
-    modifier_map Shift { <LFSH> };
-    modifier_map Shift { <RTSH> };
-    modifier_map Mod1 { <LALT> };
-    modifier_map Control { <CAPS> };
+    modifier_map Mod1 { <LFSH> };
+    // modifier_map Shift { <RTSH> };
+    modifier_map Shift { <LALT> };
+    modifier_map Mod1 { <CAPS> };
     modifier_map Mod2 { <NMLK> };
     modifier_map Mod5 { <LVL3> };
     modifier_map Lock { <RCTL> };
-    modifier_map Mod1 { <RALT> };
+    modifier_map Control { <RALT> };
     modifier_map Mod4 { <LWIN> };
     modifier_map Mod4 { <RWIN> };
     modifier_map Mod5 { <MDSW> };

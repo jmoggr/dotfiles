@@ -35,7 +35,7 @@ URxvt*scrollBar: false
 ! https://bbs.archlinux.org/viewtopic.php?pid=1619832#p1619832
 URxvt.lineSpace: 1
 
-URxvt.font: xft:DejaVu Sans Mono:size=10.5:antialias=true:autohint=true
+URxvt.font: xft:DejaVu Sans Mono:size=10.5:antialias=true:autohint=true, xft:DejaVuSansMono Nerd Font:size=10.5:antialias=true
 
 URxvt.keysym.C-f: \032
 

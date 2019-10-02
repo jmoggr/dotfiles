@@ -63,12 +63,13 @@ hc keybind $Mod-Shift-l     spawn /home/jason/.config/herbstluftwm/hc-shift-wind
 # let the current frame explode into subframes
 #hc keybind $Mod-Control-space split explode
 
+# TODO: Add method to reset sizes
 # resizing frames
-resizestep=0.015
-hc keybind $Mod-Control-h       resize left +$resizestep
-hc keybind $Mod-Control-j       resize down +$resizestep
-hc keybind $Mod-Control-k       resize up +$resizestep
-hc keybind $Mod-Control-l       resize right +$resizestep
+# resizestep=0.015
+# hc keybind $Mod-Control-h       resize left +$resizestep
+# hc keybind $Mod-Control-j       resize down +$resizestep
+# hc keybind $Mod-Control-k       resize up +$resizestep
+# hc keybind $Mod-Control-l       resize right +$resizestep
 
 # splitting frames
 hc keybind $Mod-Mod4-h       split left 0.5

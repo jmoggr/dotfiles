@@ -4,7 +4,6 @@
 # Fetch infos on your computer, and print them to stdout every second.
 source $HOME/.config/herbstluftwm/hc-colors.sh
 
-
 function get_urgency_colour 
 {
     as_degree=$((( (100 - $1) * 120)/100))
@@ -144,7 +143,7 @@ memused() {
 #
 # see the tag_status command in herbstluftwm for a list of valid tag states and
 # the characters that represent the states.
-desktop_pager() 
+desktop_pager()
 {
     # the status of each workspace is a combination of the status of the
     # workspaces desktop and hidden tags. States are combined in the

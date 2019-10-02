@@ -29,24 +29,23 @@ hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Return  spawn urxvt
 hc keybind $Mod-Shift-Return  spawn urxvt
 hc keybind $Mod-Tab     spawn firefox
-hc keybind $Mod-q       spawn /home/jason/.config/herbstluftwm/hc-close-window.sh 
+hc keybind $Mod-q       spawn /home/jason/.config/herbstluftwm/hc-close-window.sh
 hc keybind $Mod-r       spawn /home/jason/.config/herbstluftwm/hc-remove-frame.sh
 hc keybind $Mod-s       spawn /home/jason/.config/herbstluftwm/hc-add-frame.sh
 hc keybind $Mod-n       spawn /home/jason/.config/herbstluftwm/hc-cycle-hidden.sh
 hc keybind $Mod-u       spawn /home/jason/.config/herbstluftwm/hc-hidden-menu.sh
 hc keybind $Mod-d       spawn /home/jason/.config/herbstluftwm/hc-clipboard.sh promote
 
-# basic movement
-# focusing clients
+# basic movement to focus clients
 hc keybind $Mod-h     focus left
 hc keybind $Mod-j     focus down
 hc keybind $Mod-k     focus up
 hc keybind $Mod-l     focus right
 
-
-hc keybind F1   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh mute 
+hc keybind F1   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh mute
 hc keybind F2   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh down
 hc keybind F3   spawn $HOME/.config/herbstluftwm/hc-volume-control.sh up
+
 hc keybind F7   spawn $HOME/.config/herbstluftwm/hc-toggle-frame.sh 
 
 hc keybind $Mod-p pseudotile toggle
@@ -178,7 +177,7 @@ hc unlock
 
 case "$(hostname)" in
     "warrig")
-        hc spawn $HOME/.config/herbstluftwm/hc-warrig.sh 
+        hc spawn $HOME/.config/herbstluftwm/hc-warrig.sh
     ;;
     "doofwagon")
         :

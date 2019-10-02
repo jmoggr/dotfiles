@@ -151,11 +151,18 @@ desktop_pager()
     # of the combined statuses.
     declare -A workspace_status_chars
 
-    pager_string=""
-    focussed_tag=$(herbstclient attr tags.focus.name)
+    focussed_tag=$(timeout -s 9 1 herbstclient attr tags.focus.name)
+    if [ $? -ne 0 ]; then
+        return 1
+    fi
 
-    # loop over each tag 
-    for tag in `herbstclient tag_status`; do
+    tag_status=$(timeout -s 9 1 herbstclient tag_status)
+    if [ $? -ne 0 ]; then
+        return 1
+    fi
+
+    # loop over each tag
+    for tag in $(echo "$tag_status"); do
         # if the tag is part of a valid workspace 
         if [[ $tag =~ [\.\:\+\#\-\%\!]h?[1-6] ]]; then
             # get the workspace number
@@ -169,6 +176,7 @@ desktop_pager()
         fi
     done
 
+    pager_string=""
     # loop for each workspace, workspaces are indexed at 1
     for ((i = 1 ; i < ${#workspace_status_chars[@]} + 1 ; i++)); do
         status_chars=${workspace_status_chars[$i]}
@@ -207,6 +215,7 @@ desktop_pager()
         pager_string+="%{A}"
     done
 
+    last_pager_string="$pager_string"
     # print the pager to the lemonbar
     echo "$pager_string"
 }
@@ -215,21 +224,16 @@ hidden_window_count()
 {
     current_tag=$(timeout -s 9 1 herbstclient attr tags.focus.name)
     if [ $? -ne 0 ]; then
-        (>&2 echo "timed out on 'hc attr tags.focus.name'")
-        echo "$last_window_count"
-        return
+        return 1
     fi
 
     hidden_tag="h$current_tag"
     window_count=$(timeout -s 9 1 herbstclient dump "$hidden_tag" | egrep -o "0x[0-9a-z]{6,}" | wc -l)
     if [ $? -ne 0 ]; then
-        (>&2 echo "timed out on 'hc dump tags.focus.name'")
-        echo "$last_window_count"
-        return
+        return 1
     fi
 
-    last_window_count="%{T2}%{F#ffffff}$window_count%{T-}%{F$text_color}"
-    echo "$last_window_count"
+    echo "%{T2}%{F#ffffff}$window_count%{T-}%{F$text_color}"
 }
 
 fade_out() 
@@ -246,7 +250,25 @@ fade_in()
 
 print_lemonbar_string()
 {
-    echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)    $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
+    pager_string="$(desktop_pager)"
+    if [ $? -ne 0 ]; then
+        if [ -n "$last_pager_string" ]; then
+            pager_string="$last_pager_string"
+        fi
+    else
+        last_pager_string="$pager_string"
+    fi
+
+    hidden_window_string="$(hidden_window_count)"
+    if [ $? -ne 0 ]; then
+        if [ -n "$last_hidden_window_count" ]; then
+            hidden_window_string="$last_hidden_window_string"
+        fi
+    else
+        last_hidden_window_string="$hidden_window_string"
+    fi
+
+    echo "%{B$normal_color}{F$text_color}%{l}${pager_string} %{F$accent_color}┃%{F$text_color} ${hidden_window_string} %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)    $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
 }
 
 watch_file="/tmp/hc-input-flag"

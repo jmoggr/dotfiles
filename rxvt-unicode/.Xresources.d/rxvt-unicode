@@ -24,6 +24,10 @@ URxvt*perl-ext: unichr,matcher
 URxvt.keysym.C-y: perl:clipboard:copy
 URxvt.keysym.C-p: perl:clipboard:paste
 
+! page down/page up
+URxvt.keysym.C-j: \033[6~
+URxvt.keysym.C-k: \033[5~
+
 ! hide scrollbar
 URxvt*scrollBar: false
 

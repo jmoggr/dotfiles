@@ -44,7 +44,7 @@ battery()
 
         capacity=$(cat $BAT_pattern/capacity | xargs printf "%02d")
         status=$(cat $BAT_pattern/status)
-            
+
         if [[ "$capacity" == "99" ]]; then
             capacity=100
         fi
@@ -74,7 +74,7 @@ volume() {
     percent=$(amixer get Master | sed -n -r "s/^.*\[([0-9]+)\%\].*$/\1/p" | head -n 1 | xargs printf "%02d")
     color=""
     icon=""
-    
+
     if amixer get Master | egrep -q "\[[0-9]{1,2}%\].*\[off\]"; then
         color="$urgent_color"
     else
@@ -109,13 +109,12 @@ cpuload()
 }
 
 
-temperature() 
+temperature()
 {
     temp=$(cat /sys/class/thermal/thermal_zone0/temp)
     temp=${temp::-3}
 
     percent=$(((((temp - 40) * 10)/6)))
-    #echo $percent
 
     hex_color=$(get_urgency_colour $percent)
 
@@ -213,14 +212,25 @@ desktop_pager()
     echo "$pager_string"
 }
 
-hidden_window_count() 
+hidden_window_count()
 {
-    current_tag=$(herbstclient attr tags.focus.name)
+    current_tag=$(timeout -s 9 1 herbstclient attr tags.focus.name)
+    if [ $? -ne 0 ]; then
+        (>&2 echo "timed out on 'hc attr tags.focus.name'")
+        echo "$last_window_count"
+        return
+    fi
+
     hidden_tag="h$current_tag"
+    window_count=$(timeout -s 9 1 herbstclient dump "$hidden_tag" | egrep -o "0x[0-9a-z]{6,}" | wc -l)
+    if [ $? -ne 0 ]; then
+        (>&2 echo "timed out on 'hc dump tags.focus.name'")
+        echo "$last_window_count"
+        return
+    fi
 
-    window_count=$(herbstclient dump "$hidden_tag" | egrep -o "0x[0-9a-z]{6,}" | wc -l)
-
-    echo "%{T2}%{F#ffffff}$window_count%{T-}%{F$text_color}"
+    last_window_count="%{T2}%{F#ffffff}$window_count%{T-}%{F$text_color}"
+    echo "$last_window_count"
 }
 
 fade_out() 
@@ -235,25 +245,27 @@ fade_in()
     echo $fade
 }
 
-print_lemonbar_string() 
+print_lemonbar_string()
 {
-    echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)  $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
+    echo "%{B$normal_color}{F$text_color}%{l}$(desktop_pager) %{F$accent_color}┃%{F$text_color} $(hidden_window_count) %{F$accent_color}┃%{F$text_color}  $(fade_out)  %{r}$(fade_in)    $(battery)    $(memused)    $(temperature)   $(cpuload)    $(volume)    %{B$active_color}   $(calendar_date)   $(time_of_day) %{B#00000000}"
 }
 
-var=250
 watch_file="/tmp/hc-input-flag"
 
 touch $watch_file
 
-$(sleep 0.5 && touch $watch_file) &
-
 # This loop will fill a buffer with our infos, and output it to stdout.
 while :; do
-    inotifywait --timeout 5 --event open /tmp/hc-input-flag > /dev/null
+    start_time=$(date '+%s')
+    print_lemonbar_string
+    stop_time=$(date '+%s')
+    delta_time=$(($stop_time -$start_time))
+
+    (>&2 echo "Clock Time: $(date '+%R'), Print Duration: $delta_time")
+
+    inotifywait --timeout 2 --event open $watch_file 1>&2
 
     truncate -s 0 $watch_file
-
-    print_lemonbar_string
 
 done | \
     lemonbar -d -u 2 \

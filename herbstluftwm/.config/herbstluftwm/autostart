@@ -88,6 +88,12 @@ for i in ${tag_names[@]} ; do
     hc keybind "$Mod-Shift-$i" spawn /home/jason/.config/herbstluftwm/hc-shift-desktop.sh "$i"
 done
 
+# Shortcuts to change virtual terminals
+# TODO: See if there is this is doable without changes to sudoers
+for i in {1..7}; do
+    hc keybind $Mod-Control-F$i spawn sudo chvt $i
+done
+
 # use the first newly created tag
 hc use ${tag_names[0]} 
 

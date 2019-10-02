@@ -1,5 +1,0 @@
-# application   |   with_path   |   select_dir  |   show_hidden |   base_path   |  extensions   | launch_command
-nemo            |               |               |               |               |               |
-zathura         |   true        |               |               |   ~/downloads | pdf           |
-libreoffice     |   true        |               |               |               |               |
-minecraft       |               |               |               |               |               | /arsenal/games/minecraft/start.sh

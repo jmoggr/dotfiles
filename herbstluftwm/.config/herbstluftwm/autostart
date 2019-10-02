@@ -32,9 +32,8 @@ hc keybind $Mod-Tab     spawn firefox
 hc keybind $Mod-q       spawn /home/jason/.config/herbstluftwm/hc-close-window.sh 
 hc keybind $Mod-r       spawn /home/jason/.config/herbstluftwm/hc-remove-frame.sh
 hc keybind $Mod-s       spawn /home/jason/.config/herbstluftwm/hc-add-frame.sh
-hc keybind $Mod-m       spawn /home/jason/.config/herbstluftwm/launcher/launcher.sh 
-hc keybind $Mod-n       spawn /home/jason/.config/herbstluftwm/hc-cycle-hidden.sh 
-hc keybind $Mod-u       spawn /home/jason/.config/herbstluftwm/hc-hidden-menu.sh 
+hc keybind $Mod-n       spawn /home/jason/.config/herbstluftwm/hc-cycle-hidden.sh
+hc keybind $Mod-u       spawn /home/jason/.config/herbstluftwm/hc-hidden-menu.sh
 
 # basic movement
 # focusing clients
